@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#13C6B6</color>
+    <color name="colorPrimaryDark">#009688</color>
+    <color name="arenaBackground">#EAEAEA</color>
+    <color name="tabtextcolor">#FFFFFF</color>
+    <color name="tabindicatorcolor">#2D2D2D</color>
+
+    <color name="colorAccent">#03DAC5</color>
+</resources>
