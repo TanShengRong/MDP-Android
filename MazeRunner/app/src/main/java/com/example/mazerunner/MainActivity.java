@@ -1,10 +1,12 @@
 package com.example.mazerunner;
 
+import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,5 +30,15 @@ public class MainActivity extends AppCompatActivity {
         //Adapter Setup
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    public void buttonClick(View v) {
+        switch(v.getId()) {
+            case R.id.btnGoToBtActivity:
+                Intent myIntent = new Intent();
+                myIntent.setClassName("com.example.mazerunner", "com.example.mazerunner.BluetoothActivity");
+                startActivity(myIntent);
+                break;
+        }
     }
 }
