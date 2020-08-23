@@ -14,17 +14,18 @@
             android:id="@+id/scanNow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="buttonClick"
             android:text="Scan Now" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.2"
-            android:text="Available Devices"
+            android:text="MY DEVICES"
             android:textStyle="normal" />
 
         <ListView
-            android:id="@+id/availableDevices"
+            android:id="@+id/myDevices"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
@@ -33,10 +34,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.2"
-            android:text="Paired Devices" />
+            android:text="OTHER DEVICES" />
 
         <ListView
-            android:id="@+id/pairedDevices"
+            android:id="@+id/otherDevices"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
