@@ -13,10 +13,11 @@
             android:name=".BluetoothActivity"
             android:label="@string/title_activity_bluetooth"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".MainActivity">
+        <service android:name=".BluetoothConnectionService" />
+        <activity
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -25,12 +26,8 @@
     <uses-feature android:name="android.hardware.bluetooth" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!--
- If your app targets Android 9 or lower, you can declare
-         ACCESS_COARSE_LOCATION instead.
-    -->
+    <!-- If your app targets Android 9 or lower, you can declare ACCESS_COARSE_LOCATION instead.-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
 </manifest>
