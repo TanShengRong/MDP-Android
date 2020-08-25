@@ -8,39 +8,59 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_weight="1">
 
-        <Button
-            android:id="@+id/scanNow"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="buttonClick"
-            android:text="Scan Now" />
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="5">
+
+            <Button
+                android:id="@+id/scanNow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Scan Now / Refresh" />
+
+            <Button
+                android:id="@+id/enableDiscoverable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Enable Discoverable" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="5"
             android:text="MY DEVICES"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            android:gravity="bottom|left"
+            />
 
         <ListView
             android:id="@+id/myDevices"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="40" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:text="OTHER DEVICES" />
+            android:layout_weight="5"
+            android:text="OTHER DEVICES"
+            android:gravity="bottom|left"
+            />
 
         <ListView
             android:id="@+id/otherDevices"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="40" />
 
     </LinearLayout>
 
