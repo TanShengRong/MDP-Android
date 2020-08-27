@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
                 myIntent.setClassName("com.example.mazerunner", "com.example.mazerunner.BluetoothActivity");
                 startActivity(myIntent);
                 break;
+            case R.id.btnGoToCommunicationActivity:
+                Intent myCIntent = new Intent();
+                myCIntent.setClassName("com.example.mazerunner", "com.example.mazerunner.CommunicationActivity");
+                startActivity(myCIntent);
+                break;
         }
     }
 }

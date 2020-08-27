@@ -13,6 +13,9 @@
             android:name=".BluetoothActivity"
             android:label="@string/title_activity_bluetooth"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".CommunicationActivity">
+        </activity>
         <service android:name=".BluetoothConnectionService" />
         <activity
             android:name=".MainActivity">
