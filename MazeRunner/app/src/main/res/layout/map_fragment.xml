@@ -1,14 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Map Fragment"
-        android:textSize="20sp"
-        android:textStyle="normal"></TextView>
+        android:textSize="30dp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></TextView>
 
-</LinearLayout>
+    <Switch
+        android:id="@+id/automatic_Update_Toggle"
+        android:layout_width="210dp"
+        android:layout_height="30dp"
+        android:scaleX="1.25"
+        android:scaleY="1.25"
+        android:text="Automatic Update"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.889"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.098" />
+
+    <Button
+        android:id="@+id/buttonSetWaypoint"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Set Waypoint"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/automatic_Update_Toggle"
+        app:layout_constraintVertical_bias="0.035" />
+
+    <Button
+        android:id="@+id/buttonSetStartpoint"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Set Start Point"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.875"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSetWaypoint"
+        app:layout_constraintVertical_bias="0.034" />
+
+
+</android.support.constraint.ConstraintLayout>
