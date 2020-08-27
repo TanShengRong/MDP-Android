@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layout_weight="1">
+
+    <ListView
+        android:id="@+id/communicationLog"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="17">
+
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1" >
+
+        <RadioGroup
+            android:id="@+id/f1f2String"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RadioButton
+                android:id="@+id/f1String"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="F1"
+                android:layout_weight="1" />
+            <RadioButton
+                android:id="@+id/f2String"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="F2"
+                android:layout_weight="1" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="2" >
+
+        <EditText
+            android:id="@+id/stringToBeSent"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/saveString"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Save"
+            android:onClick="onSaveClicked"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/sendString"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Send"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</LinearLayout>
