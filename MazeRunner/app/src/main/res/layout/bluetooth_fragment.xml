@@ -4,17 +4,11 @@
     android:layout_height="match_parent"
     android:gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bluetooth Fragment"
-        android:textSize="20sp"
-        android:textStyle="normal"></TextView>
-
     <Button
-        android:id="@+id/discover_button"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="ON/OFF" />
+        android:id="@+id/btnGoToBtActivity"
+        android:onClick="buttonClick"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="goToBtActivity" />
 
 </LinearLayout>
