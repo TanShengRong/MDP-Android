@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Controller Fragment"
-        android:textSize="15sp"
+        android:textSize="30sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -22,37 +22,56 @@
 
 
     //Direction Buttons
-
-
-    //Exploration
-
-
-    //Shortest Path
-
     <ImageButton
-        android:id="@+id/buttonUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:id="@+id/buttonLeft"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="228dp"
         android:background="@drawable/circle_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.159"
+        app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_up_arrow"
+        app:srcCompat="@drawable/ic_left_arrow"
         tools:ignore="VectorDrawableCompat" />
 
     <ImageButton
         android:id="@+id/buttonDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="156dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="308dp"
         android:background="@drawable/circle_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.159"
+        app:layout_constraintHorizontal_bias="0.158"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_down_arrow"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/buttonRight"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="224dp"
+        android:background="@drawable/circle_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.269"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_right_arrow"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/buttonUp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="144dp"
+        android:background="@drawable/circle_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.151"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_up_arrow"
         tools:ignore="VectorDrawableCompat" />
 
     <TextView
@@ -61,77 +80,91 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:text="Robot Status"
-        android:textSize="20sp"
+        android:layout_marginTop="68dp"
+        android:text="Robot Status:"
+        android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/buttonRight"
+    <TextView
+        android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:background="@drawable/circle_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.266"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_right_arrow"
-        tools:ignore="VectorDrawableCompat" />
-
-    <ImageButton
-        android:id="@+id/buttonLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:background="@drawable/circle_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_left_arrow"
-        tools:ignore="VectorDrawableCompat" />
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="68dp"
+        android:text="TextView"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/buttonReset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="316dp"
         android:background="@drawable/circle_button_red"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.924"
+        app:layout_constraintHorizontal_bias="0.868"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonShortest"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_reset"
         tools:ignore="VectorDrawableCompat" />
 
     <ImageButton
         android:id="@+id/buttonShortest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="212dp"
         android:background="@drawable/circle_button_yellow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.924"
+        app:layout_constraintHorizontal_bias="0.868"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonExplore"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_shortest"
         tools:ignore="VectorDrawableCompat" />
 
     <ImageButton
         android:id="@+id/buttonExplore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="108dp"
         android:background="@drawable/circle_button_yellow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.924"
+        app:layout_constraintHorizontal_bias="0.868"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_explore"
         tools:ignore="VectorDrawableCompat" />
+
+    //explore timer
+
+    //shortest timer
+
+    <Chronometer
+        android:id="@+id/exploreTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonExplore"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Chronometer
+        android:id="@+id/shortestTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonShortest"
+        app:layout_constraintTop_toBottomOf="@+id/exploreTimer" />
+
 
     //Reset Map
 
