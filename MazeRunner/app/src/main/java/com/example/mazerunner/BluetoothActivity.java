@@ -1,3 +1,4 @@
+/*
 package com.example.mazerunner;
 
 import android.Manifest;
@@ -234,4 +235,4 @@ public class BluetoothActivity extends AppCompatActivity {
 
         }
     };
-}
+}*/

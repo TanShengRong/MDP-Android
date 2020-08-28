@@ -1,3 +1,4 @@
+/*
 package com.example.mazerunner;
 
 import android.content.BroadcastReceiver;
@@ -122,3 +123,4 @@ public class CommunicationActivity extends AppCompatActivity implements RadioGro
         Toast.makeText(context, toastText, duration).show();
     }
 }
+*/

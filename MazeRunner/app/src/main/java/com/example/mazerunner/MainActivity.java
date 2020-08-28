@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void buttonClick(View v) {
+    /*public void buttonClick(View v) {
         switch(v.getId()) {
             case R.id.btnGoToBtActivity:
                 Intent myIntent = new Intent();
@@ -47,5 +47,5 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(myCIntent);
                 break;
         }
-    }
+    }*/
 }
