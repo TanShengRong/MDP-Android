@@ -3,9 +3,11 @@ package com.example.mazerunner;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.view.LayoutInflater;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import java.util.ArrayList;
@@ -14,13 +16,14 @@ import java.util.List;
 public class MazeView extends View{
 
     private Cell[][] cells;
-    private int [] exploredGrid;
-    private int [] obstacleGrid;
+    public int [] exploredGrid;
+    public int [] obstacleGrid;
     private static final int COLS = 15, ROWS = 20; // x-axis, y-axis
     private static final float WALL_THICKNESS = 3;
     private float cellSize, hMargin, vMargin;
     private final String DEFAULTAL = "AR,AN,"; // Sending to Arudino
     private final String DEFAULTAR = "AR,AN,"; // Sending to Arudino
+    private boolean autoupdate;
 
     private Paint wallPaint;//black
     private Paint bgdPaint;//light grey
@@ -31,6 +34,7 @@ public class MazeView extends View{
     private Paint robotBodyPaint;//yellow
     private Paint robotEyePaint;//black
     private Paint waypointPaint;//blue
+    private Paint imagePaint;//purple
 
     private int[] waypoint = {1,1};//waypoint
     private int [] robotFront = {1,2};//robot starting coordinates
@@ -45,7 +49,6 @@ public class MazeView extends View{
     ArrayList<String> obstacle_array = new ArrayList<String>();
 
     MainActivity activityMain = (MainActivity) getContext();
-
 
     public MazeView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -78,6 +81,9 @@ public class MazeView extends View{
 
         waypointPaint = new Paint();
         waypointPaint.setColor(Color.rgb(109,188,240));
+
+        imagePaint = new Paint();
+        imagePaint.setColor(Color.rgb(210,149,246));
 
 
         createMaze();
@@ -148,6 +154,44 @@ public class MazeView extends View{
                     canvas.drawLine(x*cellSize,(y+1)*cellSize,(x+1)*cellSize,(y+1)*cellSize,wallPaint);
             }
         }
+        //obstacles
+        int inc = 0;
+        int inc2 = 0;
+
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLS; x++) {
+                //when explored then draw obstacle if any
+
+                if (exploredGrid != null && exploredGrid[inc] == 1) {
+                    canvas.drawRect(x * cellSize, (ROWS - 1 - y) * cellSize,
+                            (x + 1) * cellSize, (ROWS - y) * cellSize,  exploredPaint);
+                    if (obstacleGrid != null && obstacleGrid[inc2] == 1) {
+                        canvas.drawRect(x * cellSize, (ROWS - 1 - y) * cellSize,
+                                (x + 1) * cellSize, (ROWS - y) * cellSize, obstaclePaint);
+                    }
+                    inc2++;
+                }
+                inc++;
+            }
+        }
+
+        //Numberid drawings on obstacle
+        if(numberID!=null&&numberIDY!=null&&numberIDX!=null){
+            for(int i =0;i<numberIDX.size();i++){
+
+                if(Integer.parseInt(numberID.get(i))<10&&Integer.parseInt(numberID.get(i))>0)
+                    canvas.drawText(numberID.get(i),(numberIDX.get(i)-1)*cellSize+9,(ROWS-numberIDY.get(i)+1)*cellSize-7,imagePaint);
+                else if(Integer.parseInt(numberID.get(i))>9&&Integer.parseInt(numberID.get(i))<16)
+                    canvas.drawText(numberID.get(i),(numberIDX.get(i)-1)*cellSize+6,(ROWS-numberIDY.get(i)+1)*cellSize-7,imagePaint);
+            }
+        }
+
+        //display the waypoint when user taps
+        if (waypoint[0] >= 0) {
+            canvas.drawRect(waypoint[0] * cellSize, (ROWS - 1 - waypoint[1]) * cellSize,
+                    (waypoint[0] + 1) * cellSize, (ROWS - waypoint[1]) * cellSize, waypointPaint);
+
+        }
 
         //displaying robot position
         if (robotCenter[0] >= 0) {
@@ -158,10 +202,11 @@ public class MazeView extends View{
             canvas.drawCircle(robotFront[0] * cellSize + cellSize / 2,
                     (ROWS - robotFront[1]) * cellSize - cellSize / 2, 0.3f * cellSize, robotEyePaint);
         }
+
     }
 
 
-    /*// Robot move towards the left wall
+    // Robot move towards the left wall
     public void moveLeft(){
 
         String message;
@@ -170,22 +215,22 @@ public class MazeView extends View{
                 if(robotCenter[0] == 1) break;
                 updateRobotCoords(robotCenter[0] - 1, robotCenter[1], 270);
                 message = "F";  //forward = 0
-                activityMain.sendCtrlToBtAct(DEFAULTAL + message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL + message);
                 break;
             case 180:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 270);
                 message = "R";  //right = 2
-                activityMain.sendCtrlToBtAct(DEFAULTAL + message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL + message);
                 break;
             case 90:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
                 message = "R";
-                activityMain.sendCtrlToBtAct(DEFAULTAL + message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL + message);
                 break;
             default:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 270);
                 message = "L";   //left =1
-                activityMain.sendCtrlToBtAct(DEFAULTAL + message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL + message);
                 break;
         }
 
@@ -201,22 +246,22 @@ public class MazeView extends View{
                 if(robotCenter[0] == 13) break;
                 updateRobotCoords(robotCenter[0]+1, robotCenter[1], 90);
                 message = "F";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
             case 180:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
                 message = "L";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
             case 270:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
                 message = "R";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
             default:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
                 message = "R";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
         }
 
 
@@ -231,22 +276,22 @@ public class MazeView extends View{
                 if(robotCenter[1] == 18) break;
                 updateRobotCoords(robotCenter[0], robotCenter[1] + 1, 0);
                 message = "F";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
             case 90:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
                 message = "L";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
             case 180:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 270);
                 message = "R";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
             default:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
                 message = "R";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
         }
 
 
@@ -261,26 +306,26 @@ public class MazeView extends View{
                 if(robotCenter[1] == 1) break;
                 updateRobotCoords(robotCenter[0], robotCenter[1]-1, 180);
                 message = "F";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
             case 270:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
                 message = "L";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
             case 90:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
                 message = "R";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
             default:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
                 message = "R";
-                activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
         }
 
 
-    }*/
+    }
 
     //robot moves forward
     public void moveForward() {
@@ -390,18 +435,59 @@ public class MazeView extends View{
                 break;
         }
 
-        /*if (activityMain.autoUpdate) {
+        if (activityMain.receiveAutoUpdate()) {
             invalidate();
-        }*/
+        }
     }
 
-    /*//Enable users to select specific grids by touching for waypoint and robot coordinates
+    //method to update explored and obstacle grids on the maze
+    public void updateMaze(int [] exploredGrid, int[] obstacleGrid){
+        this.exploredGrid= exploredGrid;
+        this.obstacleGrid=obstacleGrid;
+        if (activityMain.receiveAutoUpdate()) {
+            invalidate();
+        }
+    }
+
+    //method to update explored images on the maze
+    public void updateNumberID(int x, int y, String ID)
+    {
+
+        if(numberIDY == null)
+        {
+            numberIDX = new ArrayList<>() ;
+            numberIDY = new ArrayList<>() ;
+            numberID = new ArrayList<>() ;
+        }
+        for(int i=0; i <this.numberIDY.size();i++)
+        {
+            if(x == this.numberIDX.get(i)&& y == this.numberIDY.get(i)) {
+                this.numberIDX.remove(i);
+                this.numberIDY.remove(i);
+                this.numberID.remove(i);
+            }
+        }
+
+        this.numberIDX.add(x);
+        this.numberIDY.add(y);
+        this.numberID.add(ID);
+        if(activityMain.receiveAutoUpdate()){
+            invalidate();
+        }
+
+
+    }
+
+
+    //Enable users to select specific grids by touching for waypoint and robot coordinates
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() != MotionEvent.ACTION_DOWN)
             return true;
 
         // either plot waypoint or robot center
-        if (!activityMain.getEnablePlotRobotPosition()) {
+        String test = Boolean.toString(activityMain.enablePlotReceived);
+        Log.i("MazeView", test);
+        if (!activityMain.enablePlotReceived) {
             int x = (int) (event.getX() / cellSize);
             int y = ROWS - 1 - (int) (event.getY() / cellSize);
 
@@ -415,10 +501,10 @@ public class MazeView extends View{
             invalidate(); // call onDraw method again
             //handlers user when user touch the maze when mazeFragment not initialised
 
-            activityMain.setWaypointTextView(waypoint);
+            activityMain.sendWaypointTextView(waypoint);
 
         }
-        else if (activityMain.getEnablePlotRobotPosition())
+        else if (activityMain.enablePlotReceived)
         {
             int x = (int) (event.getX() / cellSize);
             int y = ROWS - 1 - (int) (event.getY() / cellSize);
@@ -439,21 +525,21 @@ public class MazeView extends View{
             invalidate();
         }
         return true;
-    }*/
+    }
 
 
     public int[] getWaypoint() {
         return waypoint;
     }
 
-
-
     public int[] getRobotCenter() {
         return robotCenter;
     }
     public int[] getRobotFront() {
+
         return robotFront;
     }
+
 
     private class Cell{
         boolean
@@ -474,16 +560,16 @@ public class MazeView extends View{
     //The methods below are all for clearing array lists that stores additional maze elements and revert the maze back to its original state
     public void clearExploredGrid(){
         exploredGrid = null;
-        /*if (activityMain.autoUpdate) {
+        if (activityMain.receiveAutoUpdate()) {
             invalidate();
-        }*/
+        }
     }
 
     public void clearObstacleGrid(){
         obstacleGrid = null;
-        /*if (activityMain.autoUpdate) {
+        if (activityMain.receiveAutoUpdate()) {
             invalidate();
-        }*/
+        }
     }
 
     public void clearNumID(){
@@ -492,9 +578,10 @@ public class MazeView extends View{
         numberIDY = null;
         robotX.clear();
         robotY.clear();
-        /*if (activityMain.autoUpdate) {
+
+        if (activityMain.receiveAutoUpdate()) {
             invalidate();
-        }*/
+        }
     }
 
     public ArrayList<String> getObsArray() {
@@ -509,5 +596,7 @@ public class MazeView extends View{
     public void clearObsArray(){
         obstacle_array.clear();
     }
+
+
 
 }

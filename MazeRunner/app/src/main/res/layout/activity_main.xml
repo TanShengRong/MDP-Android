@@ -22,13 +22,13 @@
             android:gravity="center"
             android:text="MDP Maze Runner Group 32"
             android:textStyle="bold"
-            android:textSize="30dp"/>
+            android:textSize="20dp"/>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/arenaid"
         android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="500dp"
         android:background="@color/arenaBackground"
         android:gravity="center"
         app:elevation="0dp">
@@ -39,24 +39,23 @@
 
             <com.example.mazerunner.MazeView
                 android:id="@+id/mazeView"
-                android:layout_width="477dp"
-                android:layout_height="600dp"
-                android:layout_marginLeft="250dp"
+                android:layout_width="350dp"
+                android:layout_height="450dp"
+                android:layout_marginLeft="200dp"
                 android:layout_marginTop="20dp" />
 
             <TextView
                 android:id="@+id/robotPosition"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
                 android:gravity="center"
                 android:text="X :        Y:     "
-                android:textSize="30dp"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>
 
     </android.support.design.widget.AppBarLayout>
-
 
 
     <android.support.v4.view.ViewPager
@@ -75,6 +74,7 @@
             app:tabTextColor="@color/tabtextcolor">
 
         </android.support.design.widget.TabLayout>
+
     </android.support.v4.view.ViewPager>
 
 </LinearLayout>
