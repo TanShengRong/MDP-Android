@@ -39,7 +39,7 @@ public class FragmentMap extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.map_fragment,container,false);
 
-        MainActivity activitymain = (MainActivity) getActivity();
+        final MainActivity activitymain = (MainActivity) getActivity();
         mazeView = (MazeView) activitymain.getMazeView();
 
         //auto update switch
@@ -50,13 +50,11 @@ public class FragmentMap extends Fragment{
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
                     autoUpdate = true;
-                    sendData();
-                    //fragmapListener.onDataReceived(autoUpdate,enablePlotRobotPosition);
+                    activitymain.autoupdate = autoUpdate;
                     mazeView.invalidate();
                 }else {
                     autoUpdate = false;
-                    sendData();
-                    //fragmapListener.onDataReceived(autoUpdate,enablePlotRobotPosition);
+                    activitymain.autoupdate = autoUpdate;
                 }
             }
         });
@@ -76,16 +74,16 @@ public class FragmentMap extends Fragment{
         setStartpointSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton plotRobotPositionBtn, boolean isChecked) {
-                if (enablePlotRobotPosition) {
+                if (!isChecked) {
                     enablePlotRobotPosition = false;
                     String test = Boolean.toString(enablePlotRobotPosition);
-                    Log.i("MazeView", test);
-                    sendData();
-                    //fragmapListener.onDataReceived(autoUpdate,enablePlotRobotPosition);
+                    Log.i("FragmentMap", test);
+                    activitymain.enablestartpoint = enablePlotRobotPosition;
                 } else {
                     enablePlotRobotPosition = true;
-                    sendData();
-                    //fragmapListener.onDataReceived(autoUpdate,enablePlotRobotPosition);
+                    String test = Boolean.toString(enablePlotRobotPosition);
+                    Log.i("FragmentMap", test);
+                    activitymain.enablestartpoint = enablePlotRobotPosition;
                 }
 
             }
@@ -94,17 +92,19 @@ public class FragmentMap extends Fragment{
         return view;
     }
 
-    public void sendData(){
+    /*public void sendData(){
         Intent i = new Intent(getActivity().getBaseContext(),MainActivity.class);
         i.putExtra("AUTO_KEY", autoUpdate);
         i.putExtra("STARTPOINT_KEY", enablePlotRobotPosition);
-    }
+    }*/
 
 
     public void setWaypointTextView(int [] waypoint) {
         if (waypoint[0] < 0) {
+            waypointTextView = view.findViewById(R.id.waypointText);
             waypointTextView.setText("x:-- , y:--");
         } else {
+            waypointTextView = view.findViewById(R.id.waypointText);
             waypointTextView.setText("x:" + (waypoint[0] + 1) + " , y:" + (waypoint[1] + 1));
         }
     }

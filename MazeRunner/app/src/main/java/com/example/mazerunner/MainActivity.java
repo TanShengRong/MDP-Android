@@ -16,15 +16,16 @@ public class MainActivity extends AppCompatActivity{
     private AppBarLayout appBarLayout;
     private ViewPager viewPager;
     private TextView robotPosition;
-    protected int[] waypoint = {1,1};
-    protected boolean enablePlotReceived;
-
-    private FragmentMap fragmentMap;
+    protected int[] waypoint = {1,1};//waypoint;
+    protected int[] startPoint = {1,1}; //startpoint
+    protected boolean autoupdate = true;
+    protected boolean enablestartpoint = false;
+    public TextView waypointTextView;
+    public TextView startpointTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getIntent().getExtras();
         setContentView(R.layout.activity_main);
         tabLayout = (TabLayout) findViewById(R.id.tablayout_id);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbarid);
@@ -34,14 +35,23 @@ public class MainActivity extends AppCompatActivity{
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         //Adding Fragments
+        FragmentMap fragment_map = new FragmentMap();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("STARTPOINT_KEY",enablestartpoint);
+        bundle.putBoolean("AUTO_KEY", autoupdate);
+        fragment_map.setArguments(bundle);
+
         adapter.AddFragment(new FragmentBluetooth(),"Bluetooth");
         adapter.AddFragment(new FragmentComms(), "Comms");
-        adapter.AddFragment(new FragmentMap(),"Map");
+        adapter.AddFragment(fragment_map,"Map");
         adapter.AddFragment(new FragmentController(),"Controller");
 
         //Adapter Setup
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        enablestartpoint = getIntent().getBooleanExtra("STARTPOINT_KEY", false);
+        autoupdate = getIntent().getBooleanExtra("AUTO_KEY", true);
 
 
     }
@@ -51,15 +61,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public boolean receiveAutoUpdate(){
-        Intent i = getIntent();
-        boolean autoupdate = i.getBooleanExtra("AUTO_KEY", true);
         return autoupdate;
     }
 
     public boolean receiveEnableStartPoint(){
-        Intent i = getIntent();
-        boolean enableStartPoint = i.getBooleanExtra("STARTPOINT_KEY", true);
-        return enableStartPoint;
+        return enablestartpoint;
     }
 
     public void setRobotTextView(int [] robotpoint){
@@ -71,7 +77,24 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void sendWaypointTextView(int[] waypoint){
-        this.waypoint = waypoint;
+
+        if (waypoint[0] < 0 ||waypoint[1]<0) {
+            waypointTextView = (TextView) findViewById(R.id.waypointText);
+            waypointTextView.setText("x:-- , y:--");
+        } else {
+            waypointTextView = (TextView) findViewById(R.id.waypointText);
+            waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
+        }
+    }
+
+    public void sendStartpointTextView(int[] startpoint){
+        if (startPoint[0] < 0 ||startPoint[1]<0) {
+            startpointTextView = (TextView) findViewById(R.id.startpointText);
+            startpointTextView.setText("x:-- , y:--");
+        } else {
+            startpointTextView = (TextView) findViewById(R.id.startpointText);
+            startpointTextView.setText("x:" + (startPoint[0]) + " , y:" + (startPoint[1]));
+        }
     }
     /*public void buttonClick(View v) {
         switch(v.getId()) {
@@ -86,11 +109,6 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(myCIntent);
                 break;
         }
-    }
-
-    @Override
-    public void onEnablePlotReceivedBoolean(boolean data) {
-        this.enablePlotReceived = data;
     }*/
 
 

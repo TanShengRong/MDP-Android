@@ -23,7 +23,7 @@ public class MazeView extends View{
     private float cellSize, hMargin, vMargin;
     private final String DEFAULTAL = "AR,AN,"; // Sending to Arudino
     private final String DEFAULTAR = "AR,AN,"; // Sending to Arudino
-    private boolean autoupdate;
+
 
     private Paint wallPaint;//black
     private Paint bgdPaint;//light grey
@@ -37,6 +37,7 @@ public class MazeView extends View{
     private Paint imagePaint;//purple
 
     private int[] waypoint = {1,1};//waypoint
+    private int[] startPoint = {1,1}; //startpoint
     private int [] robotFront = {1,2};//robot starting coordinates
     private int [] robotCenter = {1, 1};//robot starting coordinates
     private int angle = 0;
@@ -85,6 +86,8 @@ public class MazeView extends View{
         imagePaint = new Paint();
         imagePaint.setColor(Color.rgb(210,149,246));
 
+        waypoint = activityMain.waypoint;
+        startPoint = activityMain.startPoint;
 
         createMaze();
     }
@@ -440,6 +443,8 @@ public class MazeView extends View{
         }
     }
 
+
+
     //method to update explored and obstacle grids on the maze
     public void updateMaze(int [] exploredGrid, int[] obstacleGrid){
         this.exploredGrid= exploredGrid;
@@ -485,9 +490,9 @@ public class MazeView extends View{
             return true;
 
         // either plot waypoint or robot center
-        String test = Boolean.toString(activityMain.enablePlotReceived);
+        String test = Boolean.toString(activityMain.receiveEnableStartPoint());
         Log.i("MazeView", test);
-        if (!activityMain.enablePlotReceived) {
+        if (!activityMain.receiveEnableStartPoint()) {
             int x = (int) (event.getX() / cellSize);
             int y = ROWS - 1 - (int) (event.getY() / cellSize);
 
@@ -504,7 +509,7 @@ public class MazeView extends View{
             activityMain.sendWaypointTextView(waypoint);
 
         }
-        else if (activityMain.enablePlotReceived)
+        else if (activityMain.receiveEnableStartPoint())
         {
             int x = (int) (event.getX() / cellSize);
             int y = ROWS - 1 - (int) (event.getY() / cellSize);
@@ -516,12 +521,17 @@ public class MazeView extends View{
 
             if (x == robotCenter[0] && y == robotCenter[1]) {
                 updateRobotCoords(-1, -1, angle);
+                startPoint[0] = robotCenter[0];
+                startPoint[1] = robotCenter[1];
 
             } else {
                 updateRobotCoords(x, y, angle);
+                startPoint[0] = robotCenter[0];
+                startPoint[1] = robotCenter[1];
             }
 
             activityMain.setRobotTextView(robotCenter);
+            activityMain.sendStartpointTextView(startPoint);
             invalidate();
         }
         return true;

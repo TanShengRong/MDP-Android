@@ -25,12 +25,12 @@
 
     <ImageButton
         android:id="@+id/buttonLeft"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="136dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="128dp"
         android:background="@drawable/circle_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_left_arrow"
@@ -38,12 +38,12 @@
 
     <ImageButton
         android:id="@+id/buttonDown"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="200dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="180dp"
         android:background="@drawable/circle_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintHorizontal_bias="0.161"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_down_arrow"
@@ -51,12 +51,12 @@
 
     <ImageButton
         android:id="@+id/buttonRight"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_marginTop="128dp"
         android:background="@drawable/circle_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.283"
+        app:layout_constraintHorizontal_bias="0.261"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_right_arrow"
@@ -64,8 +64,8 @@
 
     <ImageButton
         android:id="@+id/buttonUp"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_marginTop="88dp"
         android:background="@drawable/circle_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,9 +107,9 @@
 
     <ImageButton
         android:id="@+id/buttonReset"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="224dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="204dp"
         android:background="@drawable/circle_button_red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.916"
@@ -120,9 +120,9 @@
 
     <ImageButton
         android:id="@+id/buttonShortest"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="160dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="140dp"
         android:background="@drawable/circle_button_yellow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.916"
@@ -133,9 +133,9 @@
 
     <ImageButton
         android:id="@+id/buttonExplore"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_marginTop="88dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="76dp"
         android:background="@drawable/circle_button_yellow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.916"
@@ -148,7 +148,7 @@
         android:id="@+id/exploreTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="88dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:textSize="20dp"
