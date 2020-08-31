@@ -93,6 +93,7 @@ public class FragmentController extends Fragment{
                 mazeView.clearNumID();
                 mazeView.clearObstacleGrid();
                 mazeView.updateRobotCoords(1,1,0);
+                mazeView.clearRobot();
                 explorationBtn.setEnabled(true);
                 shortestBtn.setEnabled(true);
                 mazeView.clearObsArray();

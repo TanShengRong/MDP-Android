@@ -441,6 +441,8 @@ public class MazeView extends View{
         if (activityMain.receiveAutoUpdate()) {
             invalidate();
         }
+
+        activityMain.setRobotTextView(robotCenter);
     }
 
 
@@ -479,7 +481,6 @@ public class MazeView extends View{
         if(activityMain.receiveAutoUpdate()){
             invalidate();
         }
-
 
     }
 
@@ -529,8 +530,6 @@ public class MazeView extends View{
                 startPoint[0] = robotCenter[0];
                 startPoint[1] = robotCenter[1];
             }
-
-            activityMain.setRobotTextView(robotCenter);
             activityMain.sendStartpointTextView(startPoint);
             invalidate();
         }
@@ -592,6 +591,12 @@ public class MazeView extends View{
         if (activityMain.receiveAutoUpdate()) {
             invalidate();
         }
+    }
+
+    public void clearRobot(){
+        startPoint[0] = 1;
+        startPoint[1] = 1;
+        activityMain.sendStartpointTextView(startPoint);
     }
 
     public ArrayList<String> getObsArray() {
