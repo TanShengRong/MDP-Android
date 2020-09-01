@@ -166,6 +166,17 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonShortest"
         app:layout_constraintTop_toBottomOf="@+id/exploreTimer" />
 
+    <Switch
+        android:id="@+id/switchTilt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:text="Tilt"
+        app:layout_constraintEnd_toStartOf="@+id/buttonReset"
+        app:layout_constraintTop_toBottomOf="@+id/shortestTimer" />
+
 
     //Reset Map
 
