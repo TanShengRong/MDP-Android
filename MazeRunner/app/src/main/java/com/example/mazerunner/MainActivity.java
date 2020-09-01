@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private AppBarLayout appBarLayout;
@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity{
     protected int[] startPoint = {1,1}; //startpoint
     protected boolean autoupdate = true;
     protected boolean enablestartpoint = false;
+    protected boolean enabletilt = false;
     public TextView waypointTextView;
     public TextView startpointTextView;
 
@@ -41,10 +42,15 @@ public class MainActivity extends AppCompatActivity{
         bundle.putBoolean("AUTO_KEY", autoupdate);
         fragment_map.setArguments(bundle);
 
+        FragmentController fragment_controller = new FragmentController();
+        Bundle bundle1 = new Bundle();
+        bundle.putBoolean("STARTPOINT_KEY",enabletilt);
+        fragment_controller.setArguments(bundle1);
+
         adapter.AddFragment(new FragmentBluetooth(),"Bluetooth");
         adapter.AddFragment(new FragmentComms(), "Comms");
         adapter.AddFragment(fragment_map,"Map");
-        adapter.AddFragment(new FragmentController(),"Controller");
+        adapter.AddFragment(fragment_controller,"Controller");
 
         //Adapter Setup
         viewPager.setAdapter(adapter);
@@ -52,7 +58,7 @@ public class MainActivity extends AppCompatActivity{
 
         enablestartpoint = getIntent().getBooleanExtra("STARTPOINT_KEY", false);
         autoupdate = getIntent().getBooleanExtra("AUTO_KEY", true);
-
+        enabletilt = getIntent().getBooleanExtra("TILT_KEY", false);
 
     }
 
@@ -66,6 +72,10 @@ public class MainActivity extends AppCompatActivity{
 
     public boolean receiveEnableStartPoint(){
         return enablestartpoint;
+    }
+
+    public boolean receiveEnableTilt(){
+        return enabletilt;
     }
 
     public void setRobotTextView(int [] robotpoint){
