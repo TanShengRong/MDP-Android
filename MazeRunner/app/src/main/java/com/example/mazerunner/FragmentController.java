@@ -1,5 +1,10 @@
 package com.example.mazerunner;
 
+import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,13 +12,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Chronometer;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.os.SystemClock;
+import android.widget.Toast;
+
+import static android.content.Context.SENSOR_SERVICE;
 
 
-public class FragmentController extends Fragment{
+public class FragmentController extends Fragment implements SensorEventListener {
     View view;
     MazeView mazeView;
     private ImageButton upBtn;
@@ -25,10 +35,15 @@ public class FragmentController extends Fragment{
     private ImageButton refreshBtn;
     private ImageButton explorationBtn ;
     private ImageButton shortestBtn;
+    public Switch tiltSwitch;
     private int status;
     private TextView statusTv; //robot status
 
     public boolean shortest = false;
+
+    public boolean enabletilt = true;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
 
     private final String noDeviceMsg = "No device connected";
 
@@ -38,7 +53,8 @@ public class FragmentController extends Fragment{
         
         view = inflater.inflate(R.layout.controller_fragment,container,false);
 
-        MainActivity activitymain = (MainActivity) getContext();
+        final MainActivity activitymain = (MainActivity) getActivity();
+//        MainActivity activitymain = (MainActivity) getContext();
         mazeView = (MazeView) activitymain.getMazeView();
         statusTv = view.findViewById(R.id.status);
 
@@ -151,10 +167,69 @@ public class FragmentController extends Fragment{
             }
         });
 
+        //auto update switch
+        //tilting
+        sensorManager = (SensorManager) this.getActivity().getSystemService(Activity.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 200000);
+        tiltSwitch = view.findViewById(R.id.switchTilt);
+        tiltSwitch.setChecked(false);
+        tiltSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked){
+                    enabletilt = true;
+                    activitymain.enabletilt = enabletilt;
+                    registerSensorListener();
+                    Toast.makeText(getContext(), "Tilt activated", Toast.LENGTH_SHORT).show();
+                }else {
+                    enabletilt = false;
+                    activitymain.enabletilt = enabletilt;
+                    unregisterSensorListener();
+                    Toast.makeText(getContext(), "Tilt deactivated", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         return view;
     }
+    private void registerSensorListener() {
+        sensorManager.registerListener(this, sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_FASTEST);
+    }
+    private void unregisterSensorListener() {
+        sensorManager.unregisterListener(this);
+    }
+        @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        float x = sensorEvent.values[0];
+        float y = sensorEvent.values[1];
+        if (enabletilt){
+            //move robot only if tilt has been enabled
+            if (y < -5){
+                //device has been tilted forward
+                Toast.makeText(getContext(), "Tilt forward", Toast.LENGTH_SHORT).show();
+//                mazeView.moveUp();
+//                statusTv.setText("Moving Forward");
+            } else if (x < -5){
+                //device has been tilted to the right
+                Toast.makeText(getContext(), "Tilt right", Toast.LENGTH_SHORT).show();
+//                mazeView.moveRight();
+//                statusTv.setText("Turning Right");
+            } else if (x > 5){
+                //device has been tilted to the left
+                Toast.makeText(getContext(), "Tilt left", Toast.LENGTH_SHORT).show();
+//                mazeView.moveLeft();
+//                statusTv.setText("Turning Left");
+            } else if (y > 5){
+                //device tilted to the bottom
+                Toast.makeText(getContext(), "Tilt downwards(bottom)", Toast.LENGTH_SHORT).show();
+//                mazeView.moveDown();
+            }
+        }
+    }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
 
-
+    }
 }
