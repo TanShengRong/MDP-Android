@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentController fragment_controller = new FragmentController();
         Bundle bundle1 = new Bundle();
-        bundle.putBoolean("STARTPOINT_KEY",enabletilt);
+        bundle.putBoolean("TILT_KEY",enabletilt);
         fragment_controller.setArguments(bundle1);
 
         adapter.AddFragment(new FragmentBluetooth(),"Bluetooth");

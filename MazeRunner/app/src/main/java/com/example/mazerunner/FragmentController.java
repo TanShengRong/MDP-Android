@@ -26,6 +26,7 @@ import static android.content.Context.SENSOR_SERVICE;
 public class FragmentController extends Fragment implements SensorEventListener {
     View view;
     MazeView mazeView;
+
     private ImageButton upBtn;
     private ImageButton downBtn;
     private ImageButton leftBtn;
@@ -63,34 +64,38 @@ public class FragmentController extends Fragment implements SensorEventListener 
         upBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mazeView.moveUp();
+                mazeView.moveUp();
+                statusTv.setText("Robot Moving Up");
             }
         });
 
         //down button onclick
         downBtn = view.findViewById(R.id.buttonDown);
-        upBtn.setOnClickListener(new View.OnClickListener() {
+        downBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mazeView.moveDown();
+                mazeView.moveDown();
+                statusTv.setText("Robot Moving Down");
             }
         });
 
         //left button onclick
         leftBtn = view.findViewById(R.id.buttonLeft);
-        upBtn.setOnClickListener(new View.OnClickListener() {
+        leftBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mazeView.moveleft();
+                mazeView.moveLeft();
+                statusTv.setText("Robot Moving Left");
             }
         });
 
         //right button onclick
         rightBtn = view.findViewById(R.id.buttonRight);
-        upBtn.setOnClickListener(new View.OnClickListener() {
+        rightBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mazeView.moveRight();
+                mazeView.moveRight();
+                statusTv.setText("Robot Moving Right");
             }
         });
 

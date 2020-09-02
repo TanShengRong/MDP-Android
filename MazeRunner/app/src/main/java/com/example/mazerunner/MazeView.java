@@ -157,6 +157,7 @@ public class MazeView extends View{
                     canvas.drawLine(x*cellSize,(y+1)*cellSize,(x+1)*cellSize,(y+1)*cellSize,wallPaint);
             }
         }
+
         //obstacles
         int inc = 0;
         int inc2 = 0;
@@ -164,7 +165,6 @@ public class MazeView extends View{
         for (int y = 0; y < ROWS; y++) {
             for (int x = 0; x < COLS; x++) {
                 //when explored then draw obstacle if any
-
                 if (exploredGrid != null && exploredGrid[inc] == 1) {
                     canvas.drawRect(x * cellSize, (ROWS - 1 - y) * cellSize,
                             (x + 1) * cellSize, (ROWS - y) * cellSize,  exploredPaint);
@@ -276,22 +276,22 @@ public class MazeView extends View{
         String message;
         switch (angle) {
             case 0:
-                if(robotCenter[1] == 18) break;
+                if(robotCenter[1] == 18) break; //if facing upwards, robot moves forward. If at the top of the maze, do nth
                 updateRobotCoords(robotCenter[0], robotCenter[1] + 1, 0);
                 message = "F";
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
-            case 90:
+            case 90: //if facing right wall, turn left
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
                 message = "L";
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
-            case 180:
+            case 180: //if facing left wall, turn right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 270);
                 message = "R";
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
-            default:
+            default: //if facing downwards, turn right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
                 message = "R";
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
@@ -305,23 +305,23 @@ public class MazeView extends View{
 
         String message;
         switch (angle) {
-            case 180:
+            case 180: //if facing downwards, robot moves forward. If at the bottom of the maze, do nth
                 if(robotCenter[1] == 1) break;
                 updateRobotCoords(robotCenter[0], robotCenter[1]-1, 180);
                 message = "F";
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
-            case 270:
+            case 270: //if facing left wall, turns left
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
                 message = "L";
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
-            case 90:
+            case 90: // if facing right wall, turns right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
                 message = "R";
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
                 break;
-            default:
+            default: //if facing up, turns right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
                 message = "R";
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
@@ -540,14 +540,10 @@ public class MazeView extends View{
     public int[] getWaypoint() {
         return waypoint;
     }
-
     public int[] getRobotCenter() {
         return robotCenter;
     }
-    public int[] getRobotFront() {
-
-        return robotFront;
-    }
+    public int[] getRobotFront() { return robotFront; }
 
 
     private class Cell{
