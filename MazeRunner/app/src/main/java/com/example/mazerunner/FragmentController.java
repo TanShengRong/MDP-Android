@@ -213,28 +213,28 @@ public class FragmentController extends Fragment implements SensorEventListener 
             if (y < -5){
                 //device has been tilted forward
                 Toast.makeText(getContext(), "Tilt forward", Toast.LENGTH_SHORT).show();
-//                mazeView.moveUp();
-//                statusTv.setText("Moving Forward");
+                mazeView.moveUp();
+                statusTv.setText("Robot Moving Up");
             } else if (x < -5){
                 //device has been tilted to the right
                 Toast.makeText(getContext(), "Tilt right", Toast.LENGTH_SHORT).show();
-//                mazeView.moveRight();
-//                statusTv.setText("Turning Right");
+                mazeView.moveRight();
+                statusTv.setText("Robot Moving Right");
             } else if (x > 5){
                 //device has been tilted to the left
                 Toast.makeText(getContext(), "Tilt left", Toast.LENGTH_SHORT).show();
-//                mazeView.moveLeft();
-//                statusTv.setText("Turning Left");
+                mazeView.moveLeft();
+                statusTv.setText("Robot Moving Left");
             } else if (y > 5){
                 //device tilted to the bottom
                 Toast.makeText(getContext(), "Tilt downwards(bottom)", Toast.LENGTH_SHORT).show();
-//                mazeView.moveDown();
+                mazeView.moveDown();
+                statusTv.setText("Robot Moving Down");
             }
         }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
     }
 }
