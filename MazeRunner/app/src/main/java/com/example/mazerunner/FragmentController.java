@@ -15,13 +15,13 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Chronometer;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.os.SystemClock;
 import android.widget.Toast;
-
+import android.view.GestureDetector;
 import static android.content.Context.SENSOR_SERVICE;
-
 
 public class FragmentController extends Fragment implements SensorEventListener {
     View view;
@@ -48,6 +48,7 @@ public class FragmentController extends Fragment implements SensorEventListener 
 
     private final String noDeviceMsg = "No device connected";
 
+    private ImageView imageView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -196,6 +197,37 @@ public class FragmentController extends Fragment implements SensorEventListener 
             }
         });
 
+        imageView = (ImageView) view.findViewById(R.id.imageView);
+        imageView.setOnTouchListener(new OnSwipeTouchListener(activitymain) {
+            @Override
+            public void onSwipeTop() {
+                Toast.makeText(activitymain, "top", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(activitymain, "right", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSwipeLeft() {
+                Toast.makeText(activitymain, "left", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSwipeBottom() {
+                Toast.makeText(activitymain, "bottom", Toast.LENGTH_SHORT).show();
+            }
+        });
+//        imageView.setOnTouchListener(new OnSwipeTouchListener(FragmentController.this) {
+//            public void onSwipeTop() {
+//        Toast.makeText(MyActivity.this, "top", Toast.LENGTH_SHORT).show();
+//            }
+//            public void onSwipeRight() {
+//            }
+//            public void onSwipeLeft() {
+//            }
+//            public void onSwipeBottom() {
+//            }
+//
+//        });
         return view;
     }
     private void registerSensorListener() {
