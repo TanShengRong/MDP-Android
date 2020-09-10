@@ -1,6 +1,10 @@
 package com.example.mazerunner;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -19,6 +23,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.os.SystemClock;
 import android.widget.Toast;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -58,6 +64,9 @@ public class FragmentController extends Fragment implements SensorEventListener 
 //        MainActivity activitymain = (MainActivity) getContext();
         mazeView = (MazeView) activitymain.getMazeView();
         statusTv = view.findViewById(R.id.status);
+
+        // initialise
+        LocalBroadcastManager.getInstance(getActivity().getBaseContext()).registerReceiver(bluetoothMessageReceiver, new IntentFilter("IncomingMsg"));
 
         //up button onclick
         upBtn = view.findViewById(R.id.buttonUp);
@@ -237,4 +246,27 @@ public class FragmentController extends Fragment implements SensorEventListener 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
     }
+
+    //check if mdf string is received
+    BroadcastReceiver bluetoothMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String receivingMsg = intent.getStringExtra("receivingMsg");
+            // check if automatic map update is enabled
+            //===
+            // check if image location and id is provided
+            //===
+
+            // check if mdf1
+            if (receivingMsg.substring(0,3).equals("mdf1")){
+                //=== process string
+            }
+            else if (receivingMsg.substring(0,3).equals("mdf2")){
+                //=== process string
+            }
+
+        }
+
+    };
+
 }
