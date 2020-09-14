@@ -43,7 +43,7 @@ public class MazeView extends View{
     private int[] waypoint = {1,1};//waypoint
     private int[] startPoint = {1,1}; //startpoint
     private int [] robotFront = {1,2};//robot starting coordinates
-    private int [] robotCenter = {1, 1};//robot starting coordinates
+    public int [] robotCenter = {1, 1};//robot starting coordinates
     private int angle = 0;
 
     public byte [] bytes = "".getBytes(Charset.defaultCharset());

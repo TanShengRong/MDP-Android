@@ -64,7 +64,7 @@ public class BluetoothChat extends Thread {
                 String incomingMessage = new String(buffer, 0, bytes);
                 Log.d(TAG, "InputStream: " + incomingMessage);
 
-                // Broadcast Incoming Message
+                // Broadcast Incoming Message to other frag/act
                 Intent incomingMsgIntent = new Intent("IncomingMsg");
                 incomingMsgIntent.putExtra("receivingMsg", incomingMessage);
                 LocalBroadcastManager.getInstance(myContext).sendBroadcast(incomingMsgIntent);

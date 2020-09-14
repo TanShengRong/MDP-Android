@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,9 +65,6 @@ public class FragmentController extends Fragment implements SensorEventListener 
 //        MainActivity activitymain = (MainActivity) getContext();
         mazeView = (MazeView) activitymain.getMazeView();
         statusTv = view.findViewById(R.id.status);
-
-        // initialise
-        LocalBroadcastManager.getInstance(getActivity().getBaseContext()).registerReceiver(bluetoothMessageReceiver, new IntentFilter("IncomingMsg"));
 
         //up button onclick
         upBtn = view.findViewById(R.id.buttonUp);
@@ -153,12 +151,12 @@ public class FragmentController extends Fragment implements SensorEventListener 
                 //sendCtrlToBtAct("AR,AN,E"); //send exploration message to arduino
                 explorationBtn.setEnabled(false); //disable exploration button
                 shortestBtn.setEnabled(true); //enable fastest button
+                activitymain.receiveEnableTilt(shortestBtn.isEnabled());
                 statusTv.setText("Exploration in progress..."); //update status
                 exploreChr.setBase(SystemClock.elapsedRealtime()); //set stopwatch to 0:00
                 shortestChr.stop(); //stop in case there is currently stopwatch running
                 exploreChr.setFormat("Time: %s"); //format stopwatch's text
                 exploreChr.start(); //start stopwatch
-
             }
         });
 
@@ -173,7 +171,7 @@ public class FragmentController extends Fragment implements SensorEventListener 
                 explorationBtn.setEnabled(true); //enable exploration button
                 shortestBtn.setEnabled(false); //disable fastest button
                 statusTv.setText("Fastest path in progress..."); //update status
-                shortestChr.setVisibility(View.VISIBLE); //show stopwatch
+//                shortestChr.setVisibility(View.VISIBLE); //show stopwatch
                 shortestChr.setBase(SystemClock.elapsedRealtime()); //set stopwatch to 0:00
                 exploreChr.stop(); //stop if it was already running
                 shortestChr.setFormat("Time: %s"); //format stopwatch's text
@@ -193,12 +191,10 @@ public class FragmentController extends Fragment implements SensorEventListener 
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
                     enabletilt = true;
-                    activitymain.enabletilt = enabletilt;
                     registerSensorListener();
                     Toast.makeText(getContext(), "Tilt activated", Toast.LENGTH_SHORT).show();
                 }else {
                     enabletilt = false;
-                    activitymain.enabletilt = enabletilt;
                     unregisterSensorListener();
                     Toast.makeText(getContext(), "Tilt deactivated", Toast.LENGTH_SHORT).show();
                 }
@@ -246,27 +242,11 @@ public class FragmentController extends Fragment implements SensorEventListener 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
     }
-
-    //check if mdf string is received
-    BroadcastReceiver bluetoothMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String receivingMsg = intent.getStringExtra("receivingMsg");
-            // check if automatic map update is enabled
-            //===
-            // check if image location and id is provided
-            //===
-
-            // check if mdf1
-            if (receivingMsg.substring(0,3).equals("mdf1")){
-                //=== process string
-            }
-            else if (receivingMsg.substring(0,3).equals("mdf2")){
-                //=== process string
-            }
-
-        }
-
-    };
-
+    public void stopShortestChr(){
+//        this.shortestChr.stop(); //start stopwatch
+        Log.d("Btn access", "");
+    }
+    public void stopExploreChr(){
+        this.exploreChr.stop(); //start stopwatch
+    }
 }
