@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         return enablestartpoint;
     }
 
-    public void receiveEnableTilt(Boolean updatedFastest) {
+    public void receiveShortestPath(Boolean updatedFastest) {
         this.fastest = updatedFastest;
     }
 
@@ -113,16 +114,22 @@ public class MainActivity extends AppCompatActivity {
         } else {
             waypointTextView = (TextView) findViewById(R.id.waypointText);
             waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
+            String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
+            byte [] bytes = message.getBytes(Charset.defaultCharset());
+            sendCtrlToBtAct(bytes);
         }
     }
 
-    public void sendStartpointTextView(int[] startpoint) {
+    public void sendStartpointTextView(int[] startPoint) {
         if (startPoint[0] < 0 || startPoint[1] < 0) {
             startpointTextView = (TextView) findViewById(R.id.startpointText);
             startpointTextView.setText("x:-- , y:--");
         } else {
             startpointTextView = (TextView) findViewById(R.id.startpointText);
             startpointTextView.setText("x:" + (startPoint[0]) + " , y:" + (startPoint[1]));
+            String message = "start point x" + startPoint[0] + "y" + startPoint[1];
+            byte [] bytes = message.getBytes(Charset.defaultCharset());
+            sendCtrlToBtAct(bytes);
         }
     }
 
@@ -135,68 +142,81 @@ public class MainActivity extends AppCompatActivity {
             String theText = intent.getStringExtra("receivingMsg");
             MazeView mazeView = getMazeView();
             if (theText.length() > 0){
-                // check for fastest path string from algo
-                if(theText.length()< 15 && fastest && (theText.contains("R")||theText.contains("L") || theText.contains("F"))){
-                    int forwardDistance;
-                    //split string to get direction & tiles to move
-                    String[] fastestCommands = theText.split("");
-                    //move robot in order of command received
-                    for(int i =0; i<fastestCommands.length;i++){
-                        if (fastestCommands[i].equals("F")) {
-                            mazeView.robotX.add(mazeView.robotCenter[0]);
-                            mazeView.robotY.add(mazeView.robotCenter[1]);
-                            mazeView.moveForward();
-                        }
-                        else if(fastestCommands[i].equals("R")){
-                            mazeView.turnRight();
-                        }
-                        else if(fastestCommands[i].equals("L")) {
-                            mazeView.turnLeft();
-                        }
-                        else{
-                            //Exception catching in case the string format is wrong
-                            try{
-                                forwardDistance= Integer.parseInt(fastestCommands[i]);
-                                for(int j = 0; j<(forwardDistance+1);j++) {
-                                    mazeView.robotX.add(mazeView.robotCenter[0]);
-                                    mazeView.robotY.add(mazeView.robotCenter[1]);
-                                    mazeView.moveForward();
-                                }
-                            }
-                            catch (Exception e){
-                                Log.d("FP String", "String format wrong");
-                            }
-
-                        }
-                    }
-                }
+                Log.d("string received", ""+theText.length());
+                // check for fastest path string from algo and then execute its' commands
+//                if(theText.length()< 15 && fastest && (theText.contains("R")||theText.contains("L") || theText.contains("F")) && !theText.contains(":")){
+//                    int forwardDistance;
+//                    //split string to get direction & tiles to move
+//                    String[] fastestCommands = theText.split("");
+//                    //move robot in order of command received
+//                    for(int i =0; i<fastestCommands.length;i++){
+//                        if (fastestCommands[i].equals("F")) {
+//                            mazeView.robotX.add(mazeView.robotCenter[0]);
+//                            mazeView.robotY.add(mazeView.robotCenter[1]);
+//                            mazeView.moveUp();
+//                        }
+//                        else if(fastestCommands[i].equals("R")){
+//                            mazeView.moveRight();
+//                        }
+//                        else if(fastestCommands[i].equals("L")) {
+//                            mazeView.moveLeft();
+//                        }
+//                        else{
+//                            //Exception catching in case the string format is wrong
+//                            try{
+//                                forwardDistance= Integer.parseInt(fastestCommands[i]);
+//                                for(int j = 0; j<(forwardDistance+1);j++) {
+//                                    mazeView.robotX.add(mazeView.robotCenter[0]);
+//                                    mazeView.robotY.add(mazeView.robotCenter[1]);
+//                                    mazeView.moveUp();
+//                                }
+//                            }
+//                            catch (Exception e){
+//                                Log.d("FP String", "String format wrong");
+//                            }
+//
+//                        }
+//                    }
+//                }
                 // Identifying mdf string send for real-time update of maze during exploration
-                else if (theText.length() > 77&& theText.contains(":")&& !fastest) {
-                    String[] stringItems = theText.split(":");
-                    try {
-                    } catch (Exception e) {
-                        Log.d("MDF String", "AL format wrong");
-                    }
+                if (theText.length() == 15 && theText.contains(":") ){ //&& !fastest) {
+                    Log.d("mdf string parsing", theText);
+
+                    // remove quotes
+                    String tmp = theText.substring(1, theText.length()-1);
+
+                    // split mdf string to part 1 and part 2
+                    String[] stringItems = tmp.split(":");
+                    mdfExploredString = stringItems[0]; //20*15 +2 +2 (paddings)
+                    mdfObstacleString = stringItems[1];
+                    Log.d("mdfExploredString", mdfExploredString);
+                    Log.d("mdfObstacleString", mdfObstacleString);
+
                     //Getting the explored grids from MDF string
-                    String[] exploredString = hexToBinary(stringItems[0]).split("");
+                    String[] exploredString = hexToBinary(mdfExploredString).split("");
+                    Log.d("explored after convert", java.util.Arrays.toString(exploredString));
+
                     // temporary storage
                     String bin = "";
-                    int[] exploredGrid = new int[exploredString.length - 5]; //-5 to make it 300
+                    Log.d("exploredstring LEN", ""+exploredString.length);
+                    int[] exploredGrid = new int[exploredString.length - 4]; //-4 to make it 300
                     for (int i = 0; i < exploredGrid.length; i++) {
                         exploredGrid[i] = Integer.parseInt(exploredString[i + 3]); // because first element is ""
                         bin += exploredGrid[i];
                         //Storing explored and obstacle strings
-                        mdfExploredString = stringItems[0];
-                        mdfObstacleString = stringItems[1];
                     }
+                    Log.d("explored grid", java.util.Arrays.toString(exploredGrid));
+
                     String text = "";
                     //Getting the obstacle grids from MDF string
-                    String[] obstacleString = hexToBinary(stringItems[1]).split("");
-                    int[] obstacleGrid = new int[obstacleString.length - 1];
-                    Log.d("TAG", text);
+                    String[] obstacleString = hexToBinary(mdfObstacleString).split("");
+                    Log.d("obstacle after convert", java.util.Arrays.toString(obstacleString));
+
+                    int[] obstacleGrid = new int[obstacleString.length-1];
                     for (int i = 0; i < obstacleGrid.length; i++) {
-                        obstacleGrid[i] = Integer.parseInt(obstacleString[i + 1]);
+                        obstacleGrid[i] = Integer.parseInt(obstacleString[i+1]); // because first element is ""
                     }
+                    Log.d("obstacleGrid", java.util.Arrays.toString(obstacleGrid));
                     int inc = 0;
                     int inc2 = 0;
                     for (int y = 0; y < 20; y++) {
@@ -214,44 +234,43 @@ public class MainActivity extends AppCompatActivity {
                     //update the obstacles and explored grids
                     mazeView.updateMaze(exploredGrid, obstacleGrid);
                     //Getting the direction the robot is facing
-                    if (stringItems.length >= 5) {
-                        int direction= 0;
-                        if(stringItems[4].equals("N"))
-                            direction = 0;
-                        else if(stringItems[4].equals("E"))
-                            direction = 90;
-                        else if(stringItems[4].equals("S"))
-                            direction = 180;
-                        else if(stringItems[4].equals("W"))
-                            direction = 270;
-
-                        //Updating coordinates of robot according to string receive from algorithm
-                        mazeView.updateRobotCoords(Integer.parseInt(stringItems[2]),Integer.parseInt(stringItems[3])
-                                ,direction);
-                    }
+//                    if (stringItems.length >= 5) {
+//                        int direction= 0;
+//                        if(stringItems[4].equals("N"))
+//                            direction = 0;
+//                        else if(stringItems[4].equals("E"))
+//                            direction = 90;
+//                        else if(stringItems[4].equals("S"))
+//                            direction = 180;
+//                        else if(stringItems[4].equals("W"))
+//                            direction = 270;
+//
+//                        //Updating coordinates of robot according to string receive from algorithm
+//                        mazeView.updateRobotCoords(Integer.parseInt(stringItems[2]),Integer.parseInt(stringItems[3])
+//                                ,direction);
+//                    }
 
                     //This segment of the string stores information of identified image and their coordinates
-                    if(stringItems.length >= 6){
-                        //changing string to int
-                        int numberX = Integer.parseInt(stringItems[5]);
-                        int numberY = Integer.parseInt(stringItems[6]);
-                        //Checking to see if received a valid numberid
-                        boolean correctId = Pattern.matches("^[1-9][0-5]?$", stringItems[7]);
-                        if (correctId) {
-                            ArrayList<String> tempObsArray = mazeView.getObsArray();
-                            String tempPos = (numberX-1) + "," + (numberY-1);
-                            boolean checkObs = false;
-                            for (int i=0; i<tempObsArray.size(); i++){
-                                if (tempObsArray.get(i).equals(tempPos)) {
-                                    checkObs = true;
-                                }
-                            }
-                            if (checkObs){
-                                mazeView.updateNumberID(numberX,numberY,stringItems[7]);
-                            }
-                        }
-
-                    }
+//                    if(stringItems.length >= 6){
+//                        //changing string to int
+//                        int numberX = Integer.parseInt(stringItems[5]);
+//                        int numberY = Integer.parseInt(stringItems[6]);
+//                        //Checking to see if received a valid numberid
+//                        boolean correctId = Pattern.matches("^[1-9][0-5]?$", stringItems[7]);
+//                        if (correctId) {
+//                            ArrayList<String> tempObsArray = mazeView.getObsArray();
+//                            String tempPos = (numberX-1) + "," + (numberY-1);
+//                            boolean checkObs = false;
+//                            for (int i=0; i<tempObsArray.size(); i++){
+//                                if (tempObsArray.get(i).equals(tempPos)) {
+//                                    checkObs = true;
+//                                }
+//                            }
+//                            if (checkObs){
+//                                mazeView.updateNumberID(numberX,numberY,stringItems[7]);
+//                            }
+//                        }
+//                    }
                 }
                 else if(theText.equals("Explored")) {
                     //exploration completed
@@ -291,22 +310,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-    //method to convert hex to binary
-    private String hexToBinary(String hex) {
-        int pointer = 0;
-        String binary = "";
-        String partial;
-        // 1 Hex digits each time to prevent overflow and recognize leading 0000
-        while (hex.length() - pointer > 0) {
-            partial = hex.substring(pointer, pointer + 1);
-            String bin;
-            bin = Integer.toBinaryString(Integer.parseInt(partial, 16));
-            for (int i = 0; i < 4 - bin.length(); i++) {
-                binary = binary.concat("0");  // padding 0 in front
-            }
-            binary = binary.concat(bin); // then add in the converted hextobin
-            pointer += 1;
-        }
-        return binary;
-    };
+
+
+    // send control to bluetooth socket
+    public void sendCtrlToBtAct(byte[] bytes) {
+        // write out
+        BluetoothChat.writeMsg(bytes);
+    }
 }

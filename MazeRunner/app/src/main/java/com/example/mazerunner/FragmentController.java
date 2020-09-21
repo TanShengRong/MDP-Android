@@ -151,7 +151,7 @@ public class FragmentController extends Fragment implements SensorEventListener 
                 //sendCtrlToBtAct("AR,AN,E"); //send exploration message to arduino
                 explorationBtn.setEnabled(false); //disable exploration button
                 shortestBtn.setEnabled(true); //enable fastest button
-                activitymain.receiveEnableTilt(shortestBtn.isEnabled());
+                activitymain.receiveShortestPath(shortestBtn.isEnabled());
                 statusTv.setText("Exploration in progress..."); //update status
                 exploreChr.setBase(SystemClock.elapsedRealtime()); //set stopwatch to 0:00
                 shortestChr.stop(); //stop in case there is currently stopwatch running
@@ -243,8 +243,8 @@ public class FragmentController extends Fragment implements SensorEventListener 
     public void onAccuracyChanged(Sensor sensor, int i) {
     }
     public void stopShortestChr(){
-//        this.shortestChr.stop(); //start stopwatch
-        Log.d("Btn access", "");
+        this.shortestChr.stop(); //start stopwatch
+//        Log.d("Btn access", "");
     }
     public void stopExploreChr(){
         this.exploreChr.stop(); //start stopwatch

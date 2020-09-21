@@ -23,12 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
-import android.content.ContextWrapper;
-
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.MenuItem;
-
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;

@@ -223,34 +223,38 @@ public class MazeView extends View{
                 if(robotCenter[0] == 1) break;
                 updateRobotCoords(robotCenter[0] - 1, robotCenter[1], 270);
 //                message = "F";  //forward = 0
-                message = "Android.Forward";
+                message = "F";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL + message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             case 180:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 270);
 //                message = "R";  //right = 2
-                message = "Android.Right";
+                message = "R";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL + message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             case 90:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
 //                message = "R";
-                message = "Android.Right";
+                message = "R";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL + message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             default:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 270);
 //                message = "L";   //left =1
-                message = "Android.Left";
+                message = "L";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL + message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
         }
 
@@ -265,31 +269,35 @@ public class MazeView extends View{
             case 90:
                 if(robotCenter[0] == 13) break;
                 updateRobotCoords(robotCenter[0]+1, robotCenter[1], 90);
-                message = "Android.Forward";
+                message = "F";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             case 180:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
-                message = "Android.Left";
+                message = "L";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             case 270:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
-                message = "Android.Right";
+                message = "R";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             default:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
-                message = "Android.Right";
+                message = "R";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
         }
 
 
@@ -304,34 +312,38 @@ public class MazeView extends View{
                 if(robotCenter[1] == 18) break; //if facing upwards, robot moves forward. If at the top of the maze, do nth
                 updateRobotCoords(robotCenter[0], robotCenter[1] + 1, 0);
 //                message = "F";
-                message = "Android.Forward";
+                message = "F";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             case 90: //if facing right wall, turn left
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
 //                message = "L";
-                message = "Android.Left";
+                message = "L";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             case 180: //if facing left wall, turn right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 270);
 //                message = "R";
-                message = "Android.Right";
+                message = "R";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             default: //if facing downwards, turn right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
 //                message = "R";
-                message = "Android.Right";
+                message = "R";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
         }
 
 
@@ -346,110 +358,114 @@ public class MazeView extends View{
                 if(robotCenter[1] == 1) break;
                 updateRobotCoords(robotCenter[0], robotCenter[1]-1, 180);
 //                message = "F";
-                message = "Android.Forward";
+                message = "F";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             case 270: //if facing left wall, turns left
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
 //                message = "L";
-                message = "Android.Left";
+                message = "L";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             case 90: // if facing right wall, turns right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
 //                message = "R";
-                message = "Android.Right";
+                message = "R";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
                 break;
             default: //if facing up, turns right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
 //                message = "R";
-                message = "Android.Right";
+                message = "R";
                 bytes = message.getBytes(Charset.defaultCharset());
-                BluetoothChat.writeMsg(bytes);
+//                BluetoothChat.writeMsg(bytes);
                 //activityMain.sendCtrlToBtAct(DEFAULTAL+message);
+                activityMain.sendCtrlToBtAct(bytes);
         }
 
 
     }
 
-    //robot moves forward
-    public void moveForward() {
+//    //robot moves forward
+//    public void moveForward() {
+//
+//        switch (angle) {
+//            case 180:
+//                updateRobotCoords(robotCenter[0], robotCenter[1]-1, 180);
+//
+//                break;
+//            case 270:
+//                updateRobotCoords(robotCenter[0] - 1, robotCenter[1], 270);
+//
+//                break;
+//            case 90:
+//                updateRobotCoords(robotCenter[0]+1, robotCenter[1], 90);
+//
+//                break;
+//            default:
+//                updateRobotCoords(robotCenter[0], robotCenter[1] + 1, 0);
+//
+//
+//        }
+//
+//    }
 
-        switch (angle) {
-            case 180:
-                updateRobotCoords(robotCenter[0], robotCenter[1]-1, 180);
-
-                break;
-            case 270:
-                updateRobotCoords(robotCenter[0] - 1, robotCenter[1], 270);
-
-                break;
-            case 90:
-                updateRobotCoords(robotCenter[0]+1, robotCenter[1], 90);
-
-                break;
-            default:
-                updateRobotCoords(robotCenter[0], robotCenter[1] + 1, 0);
-
-
-        }
-
-    }
-
-    //robot turns right
-    public void turnRight() {
-
-
-        switch (angle) {
-            case 90:
-                updateRobotCoords(robotCenter[0], robotCenter[1], 180);
-
-                break;
-            case 180:
-                updateRobotCoords(robotCenter[0], robotCenter[1], 270);
-
-                break;
-            case 270:
-                updateRobotCoords(robotCenter[0], robotCenter[1], 0);
-
-                break;
-            default:
-                updateRobotCoords(robotCenter[0], robotCenter[1], 90);
-
-        }
-
-    }
-
-    //robot turns left
-    public void turnLeft() {
-
-
-        switch (angle) {
-            case 90:
-                updateRobotCoords(robotCenter[0], robotCenter[1], 0);
-
-                break;
-            case 180:
-                updateRobotCoords(robotCenter[0], robotCenter[1], 90);
-
-                break;
-            case 270:
-                updateRobotCoords(robotCenter[0], robotCenter[1], 180);
-
-                break;
-            default:
-                updateRobotCoords(robotCenter[0], robotCenter[1], 270);
-
-        }
-
-    }
+//    //robot turns right
+//    public void turnRight() {
+//
+//
+//        switch (angle) {
+//            case 90:
+//                updateRobotCoords(robotCenter[0], robotCenter[1], 180);
+//
+//                break;
+//            case 180:
+//                updateRobotCoords(robotCenter[0], robotCenter[1], 270);
+//
+//                break;
+//            case 270:
+//                updateRobotCoords(robotCenter[0], robotCenter[1], 0);
+//
+//                break;
+//            default:
+//                updateRobotCoords(robotCenter[0], robotCenter[1], 90);
+//
+//        }
+//
+//    }
+//
+//    //robot turns left
+//    public void turnLeft() {
+//
+//
+//        switch (angle) {
+//            case 90:
+//                updateRobotCoords(robotCenter[0], robotCenter[1], 0);
+//
+//                break;
+//            case 180:
+//                updateRobotCoords(robotCenter[0], robotCenter[1], 90);
+//
+//                break;
+//            case 270:
+//                updateRobotCoords(robotCenter[0], robotCenter[1], 180);
+//
+//                break;
+//            default:
+//                updateRobotCoords(robotCenter[0], robotCenter[1], 270);
+//
+//        }
+//
+//    }
 
     //method to change the coordinates and direction of the robot
     public void updateRobotCoords(int col, int row, int direction) {
