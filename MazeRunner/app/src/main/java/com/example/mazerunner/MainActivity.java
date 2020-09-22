@@ -179,31 +179,29 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                }
                 // Identifying mdf string send for real-time update of maze during exploration
-                if (theText.length() == 15 && theText.contains(":") ){ //&& !fastest) {
+                if (theText.length() == 153 && theText.contains(":") ){ //&& !fastest) {
                     Log.d("mdf string parsing", theText);
 
                     // remove quotes
-                    String tmp = theText.substring(1, theText.length()-1);
 
                     // split mdf string to part 1 and part 2
-                    String[] stringItems = tmp.split(":");
+                    String[] stringItems = theText.split(":");
                     mdfExploredString = stringItems[0]; //20*15 +2 +2 (paddings)
                     mdfObstacleString = stringItems[1];
                     Log.d("mdfExploredString", mdfExploredString);
                     Log.d("mdfObstacleString", mdfObstacleString);
 
-                    //Getting the explored grids from MDF string
-                    String[] exploredString = hexToBinary(mdfExploredString).split("");
+                    //Getting the explored grids from MDF string by making it into str array for accessing
+                    String[] exploredString = hexToBinary(mdfExploredString).split(""); //split to get string array
                     Log.d("explored after convert", java.util.Arrays.toString(exploredString));
 
                     // temporary storage
-                    String bin = "";
+//                    String bin = "";
                     Log.d("exploredstring LEN", ""+exploredString.length);
-                    int[] exploredGrid = new int[exploredString.length - 4]; //-4 to make it 300
+                    int[] exploredGrid = new int[exploredString.length - 5]; //-4 to make it 300 -1 for "
                     for (int i = 0; i < exploredGrid.length; i++) {
-                        exploredGrid[i] = Integer.parseInt(exploredString[i + 3]); // because first element is ""
-                        bin += exploredGrid[i];
-                        //Storing explored and obstacle strings
+                        exploredGrid[i] = Integer.parseInt(exploredString[i + 3]); // because first element is "
+//                        bin += exploredGrid[i];
                     }
                     Log.d("explored grid", java.util.Arrays.toString(exploredGrid));
 
@@ -212,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                     String[] obstacleString = hexToBinary(mdfObstacleString).split("");
                     Log.d("obstacle after convert", java.util.Arrays.toString(obstacleString));
 
-                    int[] obstacleGrid = new int[obstacleString.length-1];
+                    int[] obstacleGrid = new int[obstacleString.length-1]; //-1 for "
                     for (int i = 0; i < obstacleGrid.length; i++) {
                         obstacleGrid[i] = Integer.parseInt(obstacleString[i+1]); // because first element is ""
                     }
@@ -220,7 +218,9 @@ public class MainActivity extends AppCompatActivity {
                     int inc = 0;
                     int inc2 = 0;
                     for (int y = 0; y < 20; y++) {
+//                    for (int y=0; y<exploredString.length-4; y++) {
                         for (int x = 0; x < 15; x++) {
+//                          for (int x=0; x<obstacleString.length; x++) {
                             //For explored grids, draw obstacle if any
                             if (exploredGrid != null && exploredGrid[inc] == 1) {
                                 if (obstacleGrid != null && obstacleGrid[inc2] == 1) {
@@ -310,7 +310,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
+    //method to convert hex to binary
+    private String hexToBinary(String hex) {
+        int pointer = 0;
+        String binary = "";
+        String partial;
+        // 1 Hex digits each time to prevent overflow and recognize leading 0000
+        while (hex.length() - pointer > 0) {
+            partial = hex.substring(pointer, pointer + 1);
+            String bin;
+            bin = Integer.toBinaryString(Integer.parseInt(partial, 16));
+            for (int i = 0; i < 4 - bin.length(); i++) {
+                binary = binary.concat("0");  // padding 0 in front
+            }
+            binary = binary.concat(bin); // then add in the converted hextobin
+            pointer += 1;
+        }
+        return binary;
+    };
 
     // send control to bluetooth socket
     public void sendCtrlToBtAct(byte[] bytes) {
