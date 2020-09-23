@@ -204,7 +204,7 @@ public class FragmentController extends Fragment implements SensorEventListener 
         return view;
     }
     private void registerSensorListener() {
-        sensorManager.registerListener(this, sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), 800000); // Delay is in micro(10^-6)s; req >API9. Set to .5s
     }
     private void unregisterSensorListener() {
         sensorManager.unregisterListener(this);
@@ -217,22 +217,22 @@ public class FragmentController extends Fragment implements SensorEventListener 
             //move robot only if tilt has been enabled
             if (y < -5){
                 //device has been tilted forward
-                Toast.makeText(getContext(), "Tilt forward", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Tilt forward", Toast.LENGTH_SHORT).show();
                 mazeView.moveUp();
                 statusTv.setText("Robot Moving Up");
             } else if (x < -5){
                 //device has been tilted to the right
-                Toast.makeText(getContext(), "Tilt right", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Tilt right", Toast.LENGTH_SHORT).show();
                 mazeView.moveRight();
                 statusTv.setText("Robot Moving Right");
             } else if (x > 5){
                 //device has been tilted to the left
-                Toast.makeText(getContext(), "Tilt left", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Tilt left", Toast.LENGTH_SHORT).show();
                 mazeView.moveLeft();
                 statusTv.setText("Robot Moving Left");
             } else if (y > 5){
                 //device tilted to the bottom
-                Toast.makeText(getContext(), "Tilt downwards(bottom)", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Tilt downwards(bottom)", Toast.LENGTH_SHORT).show();
                 mazeView.moveDown();
                 statusTv.setText("Robot Moving Down");
             }
