@@ -195,13 +195,10 @@ public class MainActivity extends AppCompatActivity {
                     String[] exploredString = hexToBinary(mdfExploredString).split(""); //split to get string array
                     Log.d("explored after convert", java.util.Arrays.toString(exploredString));
 
-                    // temporary storage
-//                    String bin = "";
                     Log.d("exploredstring LEN", ""+exploredString.length);
                     int[] exploredGrid = new int[exploredString.length - 5]; //-4 to make it 300 -1 for "
                     for (int i = 0; i < exploredGrid.length; i++) {
                         exploredGrid[i] = Integer.parseInt(exploredString[i + 3]); // because first element is "
-//                        bin += exploredGrid[i];
                     }
                     Log.d("explored grid", java.util.Arrays.toString(exploredGrid));
 
@@ -271,6 +268,35 @@ public class MainActivity extends AppCompatActivity {
 //                            }
 //                        }
 //                    }
+                }
+                // Plot image recognised on obstacle
+                // e.g. NumberIDABXY where AB is 01 to 15; X is 01-15, Y is 01-20
+                // AB is number id; X is x-axis; Y is y-axis
+                else if (theText.contains("NumberID")) {
+                    Log.d("NumberID", theText);
+                    boolean isNumberIDStr = Pattern.matches("^[a-zA-z]{8}[0-9]{6}$", theText);
+                    if (isNumberIDStr) {
+                        Log.d("NumberID", "isNumberIDStr");
+                        int numberId = Integer.parseInt(theText.substring(8, 10)); // index 8-9
+                        int xCoord = Integer.parseInt(theText.substring(10, 12)); // index 10-11
+                        int yCoord = Integer.parseInt(theText.substring(12, 14)); // index 12-13
+                        boolean isValidNumbers = (numberId > 0 && numberId <= 15) &&
+                                (xCoord > 0 && xCoord <= 15)  &&
+                                (yCoord > 0 && yCoord <= 20);
+                        if (isValidNumbers) {
+                            Log.d("NumberID", "isValidNumbers");
+                            ArrayList<String> tempObsArray = mazeView.getObsArray();
+                            String tempPos = (xCoord-1) + "," + (yCoord-1);
+                            boolean isOnObstacle;
+                            for (int i=0; i<tempObsArray.size(); i++){
+                                isOnObstacle = tempObsArray.get(i).equals(tempPos);
+                                if (isOnObstacle) {
+                                    mazeView.updateNumberID(xCoord, yCoord, ""+numberId);
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
                 else if(theText.equals("Explored")) {
                     //exploration completed
