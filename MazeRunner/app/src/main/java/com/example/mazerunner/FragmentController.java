@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.os.SystemClock;
 import android.widget.Toast;
 
+import java.nio.charset.Charset;
+
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -148,7 +150,9 @@ public class FragmentController extends Fragment implements SensorEventListener 
                 final int tempX = mazeView.getWaypoint()[0] + 1;
                 final int tempY = mazeView.getWaypoint()[1] + 1;
 
-                //sendCtrlToBtAct("AR,AN,E"); //send exploration message to arduino
+                String message = "arduino_start_exploration";
+                byte [] bytes = message.getBytes(Charset.defaultCharset());
+                activitymain.sendCtrlToBtAct(bytes);
                 explorationBtn.setEnabled(false); //disable exploration button
                 shortestBtn.setEnabled(true); //enable fastest button
                 activitymain.receiveShortestPath(shortestBtn.isEnabled());
@@ -166,7 +170,9 @@ public class FragmentController extends Fragment implements SensorEventListener 
             @Override
             public void onClick(View v) {
 
-                //sendCtrlToBtAct("PC,AN,FP"); //send fastest path message to algorithm
+                String message = "algorithm_start_fastest";
+                byte [] bytes = message.getBytes(Charset.defaultCharset());
+                activitymain.sendCtrlToBtAct(bytes);
                 shortest = true;
                 explorationBtn.setEnabled(true); //enable exploration button
                 shortestBtn.setEnabled(false); //disable fastest button
