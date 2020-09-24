@@ -7,17 +7,6 @@
     android:gravity="center"
     android:id="@+id/container_map">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Map Fragment"
-        android:textSize="20dp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
-
     <Switch
         android:id="@+id/automatic_Update_Toggle"
         android:layout_width="210dp"
@@ -111,6 +100,18 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/waypointText"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/manual_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="Refresh"
+        app:layout_constraintBottom_toTopOf="@+id/startpointText"
+        app:layout_constraintEnd_toStartOf="@+id/automatic_Update_Toggle"
+        app:layout_constraintHorizontal_bias="0.179"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
