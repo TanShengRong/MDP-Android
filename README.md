@@ -4,7 +4,6 @@
 
 ### Checklist 
 
-- Manual Refresh
 - Check Bluetooth auto reconnect
 
 ### Leaderboard 
@@ -13,9 +12,9 @@
 - (?) Display mdf string
 - (?) Show captured & identified images
 
-### Functionality (Bugs)
+### Known Bugs
 
-- Remove grid clickability after populating the grid (moderate issue)
-- Remove focus from buttons when auto-update is off (minor issue)
-- Do COMMS ListView population such that it scrolls to the latest message (minor issue) 
-- Do COMMS keyboard not blocking textbox during input (minor issue)
+- Clicking on grid after populating it crashes the app (moderate issue)
+- Other buttons are clickable during exploration / fastest (minor issue)
+- COMMS ListView do not scroll to latest message (minor issue) 
+- COMMS keyboard blocks textbox during input (minor issue)
