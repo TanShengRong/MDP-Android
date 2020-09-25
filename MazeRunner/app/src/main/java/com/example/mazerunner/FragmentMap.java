@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ public class FragmentMap extends Fragment{
     public Switch setStartpointSwitch;
     public TextView waypointTextView;
     public TextView startpointTextView;
-
+    public Button manualRefreshButton;
     //PassDataListener fragmapListener;
 
 
@@ -52,9 +53,13 @@ public class FragmentMap extends Fragment{
                     autoUpdate = true;
                     activitymain.autoupdate = autoUpdate;
                     mazeView.invalidate();
+                    manualRefreshButton.setEnabled(false);
+                    manualRefreshButton.setBackgroundResource(R.drawable.disabledbutton);
                 }else {
                     autoUpdate = false;
                     activitymain.autoupdate = autoUpdate;
+                    manualRefreshButton.setEnabled(true);
+                    manualRefreshButton.setBackgroundResource(R.drawable.commonbutton);
                 }
             }
         });
@@ -85,10 +90,18 @@ public class FragmentMap extends Fragment{
                     Log.i("FragmentMap", test);
                     activitymain.enablestartpoint = enablePlotRobotPosition;
                 }
-
             }
         });
 
+        manualRefreshButton=view.findViewById(R.id.manual_refresh);
+        manualRefreshButton.setEnabled(false);
+        manualRefreshButton.setBackgroundResource(R.drawable.disabledbutton);
+        manualRefreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mazeView.invalidate();
+            }
+        });
         return view;
     }
 
@@ -109,14 +122,14 @@ public class FragmentMap extends Fragment{
         }
     }
 
-    //text view created for robot start coordinates setting
-    public void setRobotTextView(int [] robotpoint){
-        if(robotpoint[0]<0){
-            startpointTextView.setText("x:-- , y:--");
-        }else {
-            startpointTextView.setText("x:" + (robotpoint[0]+1)+" , y:"+(robotpoint[1]+1));
-        }
-    }
+//    //text view created for robot start coordinates setting
+//    public void setRobotTextView(int [] robotpoint){
+//        if(robotpoint[0]<0){
+//            startpointTextView.setText("x:-- , y:--");
+//        }else {
+//            startpointTextView.setText("x:" + (robotpoint[0]+1)+" , y:"+(robotpoint[1]+1));
+//        }
+//    }
 
     /*@Override
     public void onAttach(Context context){

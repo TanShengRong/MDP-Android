@@ -1,6 +1,10 @@
 package com.example.mazerunner;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +24,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.os.SystemClock;
 import android.widget.Toast;
+
+import java.nio.charset.Charset;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -141,15 +150,17 @@ public class FragmentController extends Fragment implements SensorEventListener 
                 final int tempX = mazeView.getWaypoint()[0] + 1;
                 final int tempY = mazeView.getWaypoint()[1] + 1;
 
-                //sendCtrlToBtAct("AR,AN,E"); //send exploration message to arduino
+                String message = "arduino_start_exploration";
+                byte [] bytes = message.getBytes(Charset.defaultCharset());
+                activitymain.sendCtrlToBtAct(bytes);
                 explorationBtn.setEnabled(false); //disable exploration button
                 shortestBtn.setEnabled(true); //enable fastest button
+                activitymain.receiveShortestPath(shortestBtn.isEnabled());
                 statusTv.setText("Exploration in progress..."); //update status
                 exploreChr.setBase(SystemClock.elapsedRealtime()); //set stopwatch to 0:00
                 shortestChr.stop(); //stop in case there is currently stopwatch running
                 exploreChr.setFormat("Time: %s"); //format stopwatch's text
                 exploreChr.start(); //start stopwatch
-
             }
         });
 
@@ -159,12 +170,14 @@ public class FragmentController extends Fragment implements SensorEventListener 
             @Override
             public void onClick(View v) {
 
-                //sendCtrlToBtAct("PC,AN,FP"); //send fastest path message to algorithm
+                String message = "algorithm_start_fastest";
+                byte [] bytes = message.getBytes(Charset.defaultCharset());
+                activitymain.sendCtrlToBtAct(bytes);
                 shortest = true;
                 explorationBtn.setEnabled(true); //enable exploration button
                 shortestBtn.setEnabled(false); //disable fastest button
                 statusTv.setText("Fastest path in progress..."); //update status
-                shortestChr.setVisibility(View.VISIBLE); //show stopwatch
+//                shortestChr.setVisibility(View.VISIBLE); //show stopwatch
                 shortestChr.setBase(SystemClock.elapsedRealtime()); //set stopwatch to 0:00
                 exploreChr.stop(); //stop if it was already running
                 shortestChr.setFormat("Time: %s"); //format stopwatch's text
@@ -184,12 +197,10 @@ public class FragmentController extends Fragment implements SensorEventListener 
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
                     enabletilt = true;
-                    activitymain.enabletilt = enabletilt;
                     registerSensorListener();
                     Toast.makeText(getContext(), "Tilt activated", Toast.LENGTH_SHORT).show();
                 }else {
                     enabletilt = false;
-                    activitymain.enabletilt = enabletilt;
                     unregisterSensorListener();
                     Toast.makeText(getContext(), "Tilt deactivated", Toast.LENGTH_SHORT).show();
                 }
@@ -199,7 +210,7 @@ public class FragmentController extends Fragment implements SensorEventListener 
         return view;
     }
     private void registerSensorListener() {
-        sensorManager.registerListener(this, sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0), 800000); // Delay is in micro(10^-6)s; req >API9. Set to .5s
     }
     private void unregisterSensorListener() {
         sensorManager.unregisterListener(this);
@@ -212,22 +223,22 @@ public class FragmentController extends Fragment implements SensorEventListener 
             //move robot only if tilt has been enabled
             if (y < -5){
                 //device has been tilted forward
-                Toast.makeText(getContext(), "Tilt forward", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Tilt forward", Toast.LENGTH_SHORT).show();
                 mazeView.moveUp();
                 statusTv.setText("Robot Moving Up");
             } else if (x < -5){
                 //device has been tilted to the right
-                Toast.makeText(getContext(), "Tilt right", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Tilt right", Toast.LENGTH_SHORT).show();
                 mazeView.moveRight();
                 statusTv.setText("Robot Moving Right");
             } else if (x > 5){
                 //device has been tilted to the left
-                Toast.makeText(getContext(), "Tilt left", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Tilt left", Toast.LENGTH_SHORT).show();
                 mazeView.moveLeft();
                 statusTv.setText("Robot Moving Left");
             } else if (y > 5){
                 //device tilted to the bottom
-                Toast.makeText(getContext(), "Tilt downwards(bottom)", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Tilt downwards(bottom)", Toast.LENGTH_SHORT).show();
                 mazeView.moveDown();
                 statusTv.setText("Robot Moving Down");
             }
@@ -236,5 +247,12 @@ public class FragmentController extends Fragment implements SensorEventListener 
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+    public void stopShortestChr(){
+        this.shortestChr.stop(); //start stopwatch
+//        Log.d("Btn access", "");
+    }
+    public void stopExploreChr(){
+        this.exploreChr.stop(); //start stopwatch
     }
 }
