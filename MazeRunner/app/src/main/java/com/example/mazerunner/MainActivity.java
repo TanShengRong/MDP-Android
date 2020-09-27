@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private String mdfExploredString = "";
     private String mdfObstacleString = "";
     private ViewPagerAdapter adapter;
+    private Chronometer shortestChr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         enablestartpoint = getIntent().getBooleanExtra("STARTPOINT_KEY", false);
         autoupdate = getIntent().getBooleanExtra("AUTO_KEY", true);
 //        enabletilt = getIntent().getBooleanExtra("TILT_KEY", false);
+        shortestChr = (Chronometer) findViewById(R.id.shortestTimer);
 
         LocalBroadcastManager.getInstance(this).registerReceiver(bluetoothMessageReceiver, new IntentFilter("IncomingMsg"));
     }
@@ -112,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
             waypointTextView = (TextView) findViewById(R.id.waypointText);
             waypointTextView.setText("x:-- , y:--");
         } else {
+
             waypointTextView = (TextView) findViewById(R.id.waypointText);
             waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
             String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
@@ -359,5 +362,10 @@ public class MainActivity extends AppCompatActivity {
     public void sendCtrlToBtAct(byte[] bytes) {
         // write out
         BluetoothChat.writeMsg(bytes);
+    }
+
+    public void stopFastestWatch(){
+        shortestChr = (Chronometer) findViewById(R.id.shortestTimer);
+        shortestChr.stop();
     }
 }

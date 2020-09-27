@@ -182,8 +182,11 @@ public class FragmentController extends Fragment implements SensorEventListener 
                 exploreChr.stop(); //stop if it was already running
                 shortestChr.setFormat("Time: %s"); //format stopwatch's text
                 shortestChr.start(); //start stopwatch
+
             }
         });
+
+
 
         //auto update switch
         //tilting
@@ -249,7 +252,8 @@ public class FragmentController extends Fragment implements SensorEventListener 
     public void onAccuracyChanged(Sensor sensor, int i) {
     }
     public void stopShortestChr(){
-        this.shortestChr.stop(); //start stopwatch
+        shortestChr.stop(); //stop stopwatch
+        statusTv.setText("Robot Reached destination");
 //        Log.d("Btn access", "");
     }
     public void stopExploreChr(){

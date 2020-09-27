@@ -386,6 +386,11 @@ public class MazeView extends View{
             invalidate();
         }
 
+        if (robotCenter[0] == 13 & robotCenter[1] == 18){
+            activityMain.stopFastestWatch();
+
+        }
+
         activityMain.setRobotTextView(robotCenter);
     }
 
