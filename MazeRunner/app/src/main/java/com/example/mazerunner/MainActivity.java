@@ -17,6 +17,9 @@ import android.view.View;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -146,131 +149,80 @@ public class MainActivity extends AppCompatActivity {
             MazeView mazeView = getMazeView();
             if (theText.length() > 0){
                 Log.d("string received", ""+theText.length());
-                // check for fastest path string from algo and then execute its' commands
-//                if(theText.length()< 15 && fastest && (theText.contains("R")||theText.contains("L") || theText.contains("F")) && !theText.contains(":")){
-//                    int forwardDistance;
-//                    //split string to get direction & tiles to move
-//                    String[] fastestCommands = theText.split("");
-//                    //move robot in order of command received
-//                    for(int i =0; i<fastestCommands.length;i++){
-//                        if (fastestCommands[i].equals("F")) {
-//                            mazeView.robotX.add(mazeView.robotCenter[0]);
-//                            mazeView.robotY.add(mazeView.robotCenter[1]);
-//                            mazeView.moveUp();
-//                        }
-//                        else if(fastestCommands[i].equals("R")){
-//                            mazeView.moveRight();
-//                        }
-//                        else if(fastestCommands[i].equals("L")) {
-//                            mazeView.moveLeft();
-//                        }
-//                        else{
-//                            //Exception catching in case the string format is wrong
-//                            try{
-//                                forwardDistance= Integer.parseInt(fastestCommands[i]);
-//                                for(int j = 0; j<(forwardDistance+1);j++) {
-//                                    mazeView.robotX.add(mazeView.robotCenter[0]);
-//                                    mazeView.robotY.add(mazeView.robotCenter[1]);
-//                                    mazeView.moveUp();
-//                                }
-//                            }
-//                            catch (Exception e){
-//                                Log.d("FP String", "String format wrong");
-//                            }
-//
-//                        }
-//                    }
-//                }
-                // Identifying mdf string send for real-time update of maze during exploration
-                if (theText.length() == 153 && theText.contains(":") ){ //&& !fastest) {
-                    Log.d("mdf string parsing", theText);
+                // Identifying mdf string sent for real-time update of maze during exploration
+                // ROBOT:{"map": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","obstacle": "000000000400000001c800000000000700000000800000001f8000070000000002000000000","robotCenter": "(1, 1)","robotHead": "(1, 2)","heading": "N"}
+                if (theText.contains("ROBOT")) {
+                    // Identifying mdf string send for real-time update of maze during exploration
+                    Log.d("algo ROBOT parsing", theText);
+                    try {
+                        theText = theText.substring(6);
+                        JSONObject jObject = new JSONObject(theText);
 
-                    // remove quotes
-
-                    // split mdf string to part 1 and part 2
-                    String[] stringItems = theText.split(":");
-                    mdfExploredString = stringItems[0]; //20*15 +2 +2 (paddings)
-                    mdfObstacleString = stringItems[1];
-                    Log.d("mdfExploredString", mdfExploredString);
-                    Log.d("mdfObstacleString", mdfObstacleString);
-
-                    //Getting the explored grids from MDF string by making it into str array for accessing
-                    String[] exploredString = hexToBinary(mdfExploredString).split(""); //split to get string array
-                    Log.d("explored after convert", java.util.Arrays.toString(exploredString));
-
-                    Log.d("exploredstring LEN", ""+exploredString.length);
-                    int[] exploredGrid = new int[exploredString.length - 5]; //-4 to make it 300 -1 for "
-                    for (int i = 0; i < exploredGrid.length; i++) {
-                        exploredGrid[i] = Integer.parseInt(exploredString[i + 3]); // because first element is "
-                    }
-                    Log.d("explored grid", java.util.Arrays.toString(exploredGrid));
-
-                    String text = "";
-                    //Getting the obstacle grids from MDF string
-                    String[] obstacleString = hexToBinary(mdfObstacleString).split("");
-                    Log.d("obstacle after convert", java.util.Arrays.toString(obstacleString));
-
-                    int[] obstacleGrid = new int[obstacleString.length-1]; //-1 for "
-                    for (int i = 0; i < obstacleGrid.length; i++) {
-                        obstacleGrid[i] = Integer.parseInt(obstacleString[i+1]); // because first element is ""
-                    }
-                    Log.d("obstacleGrid", java.util.Arrays.toString(obstacleGrid));
-                    int inc = 0;
-                    int inc2 = 0;
-                    for (int y = 0; y < 20; y++) {
-//                    for (int y=0; y<exploredString.length-4; y++) {
-                        for (int x = 0; x < 15; x++) {
-//                          for (int x=0; x<obstacleString.length; x++) {
-                            //For explored grids, draw obstacle if any
-                            if (exploredGrid != null && exploredGrid[inc] == 1) {
-                                if (obstacleGrid != null && obstacleGrid[inc2] == 1) {
-                                    mazeView.setObsArray(x,y);
-                                }
-                                inc2++;
-                            }
-                            inc++;
+                        // Update grid
+                        mdfExploredString = jObject.getString("map");
+                        mdfObstacleString = jObject.getString("obstacle");
+                        //Getting the explored grids from MDF string by making it into str array and changing to binary for accessing
+                        String[] exploredString = hexToBinary(mdfExploredString).split(""); //split to get string array
+                        Log.d("explored after convert", java.util.Arrays.toString(exploredString));
+                        Log.d("exploredstring LEN", ""+exploredString.length);
+                        int[] exploredGrid = new int[exploredString.length - 5]; //-4 to make it 300 -1 for "
+                        for (int i = 0; i < exploredGrid.length; i++) {
+                            exploredGrid[i] = Integer.parseInt(exploredString[i + 3]); // because first element is "
                         }
-                    }
-                    //update the obstacles and explored grids
-                    mazeView.updateMaze(exploredGrid, obstacleGrid);
-                    //Getting the direction the robot is facing
-//                    if (stringItems.length >= 5) {
-//                        int direction= 0;
-//                        if(stringItems[4].equals("N"))
-//                            direction = 0;
-//                        else if(stringItems[4].equals("E"))
-//                            direction = 90;
-//                        else if(stringItems[4].equals("S"))
-//                            direction = 180;
-//                        else if(stringItems[4].equals("W"))
-//                            direction = 270;
-//
-//                        //Updating coordinates of robot according to string receive from algorithm
-//                        mazeView.updateRobotCoords(Integer.parseInt(stringItems[2]),Integer.parseInt(stringItems[3])
-//                                ,direction);
-//                    }
+                        Log.d("explored grid", java.util.Arrays.toString(exploredGrid));
 
-                    //This segment of the string stores information of identified image and their coordinates
-//                    if(stringItems.length >= 6){
-//                        //changing string to int
-//                        int numberX = Integer.parseInt(stringItems[5]);
-//                        int numberY = Integer.parseInt(stringItems[6]);
-//                        //Checking to see if received a valid numberid
-//                        boolean correctId = Pattern.matches("^[1-9][0-5]?$", stringItems[7]);
-//                        if (correctId) {
-//                            ArrayList<String> tempObsArray = mazeView.getObsArray();
-//                            String tempPos = (numberX-1) + "," + (numberY-1);
-//                            boolean checkObs = false;
-//                            for (int i=0; i<tempObsArray.size(); i++){
-//                                if (tempObsArray.get(i).equals(tempPos)) {
-//                                    checkObs = true;
-//                                }
-//                            }
-//                            if (checkObs){
-//                                mazeView.updateNumberID(numberX,numberY,stringItems[7]);
-//                            }
-//                        }
-//                    }
+                        String[] obstacleString = hexToBinary(mdfObstacleString).split("");
+                        Log.d("obstacle after convert", java.util.Arrays.toString(obstacleString));
+
+                        int[] obstacleGrid = new int[obstacleString.length-1]; //-1 for "
+                        for (int i = 0; i < obstacleGrid.length; i++) {
+                            obstacleGrid[i] = Integer.parseInt(obstacleString[i+1]); // because first element is ""
+                        }
+                        Log.d("obstacleGrid", java.util.Arrays.toString(obstacleGrid));
+                        int inc = 0;
+                        int inc2 = 0;
+                        for (int y = 0; y < 20; y++) {
+                            for (int x = 0; x < 15; x++) {
+                                //For explored grids, draw obstacle if any
+                                if (exploredGrid != null && exploredGrid[inc] == 1) {
+                                    if (obstacleGrid != null && obstacleGrid[inc2] == 1) {
+                                        mazeView.setObsArray(x,y);
+                                    }
+                                    inc2++;
+                                }
+                                inc++;
+                            }
+                        }
+                        mazeView.updateMaze(exploredGrid, obstacleGrid);
+
+                        // Update robot position
+                        String robotCenter = jObject.getString("robotCenter");
+                        robotCenter = robotCenter.substring(1, robotCenter.length()-1); //remove curly brackets
+                        String [] robotCenterCoord = robotCenter.split(", ");
+                        int robotCenterX = Integer.parseInt(robotCenterCoord[0]);
+                        int robotCenterY = Integer.parseInt(robotCenterCoord[1]);
+                        int robotHeading;
+                        switch (jObject.getString("heading")){
+                            case "N"://^
+                                robotHeading = 0;
+                                break;
+                            case "E"://>
+                                robotHeading = 90;
+                                break;
+                            case "S"://v
+                                robotHeading = 180;
+                                break;
+                            case "W"://<
+                                robotHeading = 270;
+                                break;
+                            default://gg
+                                Log.d("robotHeading", "invalid");
+                                robotHeading = 0;
+                        }
+                        mazeView.updateRobotCoords(robotCenterX, robotCenterY, robotHeading);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 // Plot image recognised on obstacle
                 // e.g. NumberIDABXY where AB is 01 to 15; X is 01-15, Y is 01-20
@@ -301,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 }
-                else if(theText.equals("Explored")) {
+                else if(theText.equals("EX_DONE")) { // exploration finished
                     //exploration completed
                     //for explore stopwatch
                     controllerFragment.stopExploreChr();
