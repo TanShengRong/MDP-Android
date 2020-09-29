@@ -251,12 +251,5 @@ public class FragmentController extends Fragment implements SensorEventListener 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
     }
-    public void stopShortestChr(){
-        shortestChr.stop(); //stop stopwatch
-        statusTv.setText("Robot Reached destination");
-//        Log.d("Btn access", "");
-    }
-    public void stopExploreChr(){
-        this.exploreChr.stop(); //start stopwatch
-    }
+
 }

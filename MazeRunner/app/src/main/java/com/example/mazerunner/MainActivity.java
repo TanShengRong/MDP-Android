@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private String mdfObstacleString = "";
     private ViewPagerAdapter adapter;
     private Chronometer shortestChr;
+    private TextView statusTv;
+    private Chronometer exploreChr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -256,9 +258,9 @@ public class MainActivity extends AppCompatActivity {
                 else if(theText.equals("EX_DONE")) { // exploration finished
                     //exploration completed
                     //for explore stopwatch
-                    controllerFragment.stopExploreChr();
+                    stopExploreWatch();
                     //for shortest stopwatch
-                    controllerFragment.stopShortestChr();
+                    stopExploreWatch();
 //                    statusTv.setText("Exploration completed"); //update status
 //                    String imageStr = ""; //create string to store infomation on images found
 //                    if (mazeView.numberID != null){
@@ -319,5 +321,12 @@ public class MainActivity extends AppCompatActivity {
     public void stopFastestWatch(){
         shortestChr = (Chronometer) findViewById(R.id.shortestTimer);
         shortestChr.stop();
+
+    }
+
+    public void stopExploreWatch(){
+        exploreChr = (Chronometer) findViewById(R.id.exploreTimer);
+        exploreChr.stop();
+
     }
 }
