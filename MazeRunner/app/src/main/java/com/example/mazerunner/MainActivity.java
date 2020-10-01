@@ -115,29 +115,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendWaypointTextView(int[] waypoint) {
 
-        if (waypoint[0] < 0 || waypoint[1] < 0) {
-            waypointTextView = (TextView) findViewById(R.id.waypointText);
-            waypointTextView.setText("x:-- , y:--");
-        } else {
+        int pos = viewPager.getCurrentItem();
+        String spos = Integer.toString(pos);
+        Log.d("sendwaypoint", spos);
+        if (viewPager.getCurrentItem()!=0){
 
-            waypointTextView = (TextView) findViewById(R.id.waypointText);
-            waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
-            String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
-            byte [] bytes = message.getBytes(Charset.defaultCharset());
-            sendCtrlToBtAct(bytes);
+            if (waypoint[0] < 0 || waypoint[1] < 0) {
+                waypointTextView = (TextView) findViewById(R.id.waypointText);
+                waypointTextView.setText("x:-- , y:--");
+            } else {
+
+                waypointTextView = (TextView) findViewById(R.id.waypointText);
+                waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
+                String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
+                byte [] bytes = message.getBytes(Charset.defaultCharset());
+                sendCtrlToBtAct(bytes);
+            }
         }
+
     }
 
     public void sendStartpointTextView(int[] startPoint) {
-        if (startPoint[0] < 0 || startPoint[1] < 0) {
-            startpointTextView = (TextView) findViewById(R.id.startpointText);
-            startpointTextView.setText("x:-- , y:--");
-        } else {
-            startpointTextView = (TextView) findViewById(R.id.startpointText);
-            startpointTextView.setText("x:" + (startPoint[0]) + " , y:" + (startPoint[1]));
-            String message = "start point x" + startPoint[0] + "y" + startPoint[1];
-            byte [] bytes = message.getBytes(Charset.defaultCharset());
-            sendCtrlToBtAct(bytes);
+        if (viewPager.getCurrentItem()!=0) {
+            if (startPoint[0] < 0 || startPoint[1] < 0) {
+                startpointTextView = (TextView) findViewById(R.id.startpointText);
+                startpointTextView.setText("x:-- , y:--");
+            } else {
+                startpointTextView = (TextView) findViewById(R.id.startpointText);
+                startpointTextView.setText("x:" + (startPoint[0]) + " , y:" + (startPoint[1]));
+                String message = "start point x" + startPoint[0] + "y" + startPoint[1];
+                byte[] bytes = message.getBytes(Charset.defaultCharset());
+                sendCtrlToBtAct(bytes);
+            }
         }
     }
 
