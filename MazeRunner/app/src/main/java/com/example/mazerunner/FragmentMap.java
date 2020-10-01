@@ -105,11 +105,11 @@ public class FragmentMap extends Fragment{
         return view;
     }
 
-    /*public void sendData(){
-        Intent i = new Intent(getActivity().getBaseContext(),MainActivity.class);
-        i.putExtra("AUTO_KEY", autoUpdate);
-        i.putExtra("STARTPOINT_KEY", enablePlotRobotPosition);
-    }*/
+//    public void sendData(){
+//        Intent i = new Intent(getActivity().getBaseContext(),MainActivity.class);
+//        i.putExtra("AUTO_KEY", autoUpdate);
+//        i.putExtra("STARTPOINT_KEY", enablePlotRobotPosition);
+//    }
 
 
     public void setWaypointTextView(int [] waypoint) {

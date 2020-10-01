@@ -30,7 +30,8 @@
                 <ListView
                     android:id="@+id/communicationLog"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"></ListView>
+                    android:layout_height="160dp"
+                    android:stackFromBottom="true"></ListView>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

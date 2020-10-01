@@ -45,10 +45,11 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
     EditText outMessage;
     public ArrayList<String> messageList = new ArrayList<>();
     public CommunicationListAdapter messageListAdapter;
-
+    private  MainActivity activitymain;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        activitymain = (MainActivity) getActivity();
         view = inflater.inflate(R.layout.comms_fragment,container,false);
         sharedPref = getActivity().getSharedPreferences("mdp0032", Context.MODE_PRIVATE);
         RadioGroup stringRadioGroup = (RadioGroup) view.findViewById(R.id.f1f2String);
@@ -62,16 +63,18 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
         sendString.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                byte[] bytes = outMessage.getText().toString().getBytes(Charset.defaultCharset());
-
-                if(BluetoothChat.writeMsg(bytes)){
-
+//                byte[] bytes = outMessage.getText().toString().getBytes(Charset.defaultCharset());
+                String message = outMessage.getText().toString();
+                activitymain.sendToBtAct(message);
+                // === append to messagelist
+//                if(BluetoothChat.writeMsg(message)){
+//
                     messageList.add("Sent : " + outMessage.getText().toString());
                     messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
                     communicationLog.setAdapter(messageListAdapter);
                     outMessage.setText("");
-
-                }
+//
+//                }
             }
         });
 
@@ -111,6 +114,9 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
         @Override
         public void onReceive(Context context, Intent intent) {
             String receivingMsg = intent.getStringExtra("receivingMsg");
+//            messageList.add("Received : " + receivingMsg);
+
+//            String receivingMsg = activitymain.receivemsg;
             messageList.add("Received : " + receivingMsg);
             Log.d("BluetoothActivity", receivingMsg);
             messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
@@ -138,25 +144,10 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
         MessageTxtview.setText(storedString);
     }
 
-    /*public void onSaveClicked(View view){
-        Log.d(TAG, "onSaveClicked running");
-        TextView MessageTxtview =  view.findViewById(R.id.stringToBeSent);
-        String userInput = MessageTxtview.getText().toString();
-        Context context = getActivity().getApplicationContext();
-        CharSequence toastText = "";
-
-        RadioButton selectedRadioButton = (RadioButton)view.findViewById(checkedRadioButtonId);
-        String selectedRdbName = selectedRadioButton.getText().toString();
-        if ( selectedRdbName.equals("F1")) {
-            sharedPref.edit().putString("F1", userInput).commit();
-            toastText = "F1 has been updated";
-
-        }
-        else if (selectedRdbName.equals("F2")) {
-            sharedPref.edit().putString("F2", userInput).commit();
-            toastText = "F2 has been updated";
-        }
-        int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, toastText, duration).show();
-    }*/
+    public void updateCommsList(String message) {
+        messageList.add("Received : " + message);
+        messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
+        communicationLog.setAdapter(messageListAdapter);
+        outMessage.setText("");
+    }
 }

@@ -150,9 +150,10 @@ public class FragmentController extends Fragment implements SensorEventListener 
                 final int tempX = mazeView.getWaypoint()[0] + 1;
                 final int tempY = mazeView.getWaypoint()[1] + 1;
 
-                String message = "arduino_start_exploration";
-                byte [] bytes = message.getBytes(Charset.defaultCharset());
-                activitymain.sendCtrlToBtAct(bytes);
+                String message = "EX_START";
+//                byte [] bytes = message.getBytes(Charset.defaultCharset());
+//                activitymain.sendCtrlToBtAct(bytes);
+                activitymain.sendCtrlToBtAct(message);
                 explorationBtn.setEnabled(false); //disable exploration button
                 shortestBtn.setEnabled(true); //enable fastest button
                 activitymain.receiveShortestPath(shortestBtn.isEnabled());
@@ -170,9 +171,10 @@ public class FragmentController extends Fragment implements SensorEventListener 
             @Override
             public void onClick(View v) {
 
-                String message = "algorithm_start_fastest";
-                byte [] bytes = message.getBytes(Charset.defaultCharset());
-                activitymain.sendCtrlToBtAct(bytes);
+                String message = "FP_START";
+//                byte [] bytes = message.getBytes(Charset.defaultCharset());
+//                activitymain.sendCtrlToBtAct(bytes);
+                activitymain.sendCtrlToBtAct(message);
                 shortest = true;
                 explorationBtn.setEnabled(true); //enable exploration button
                 shortestBtn.setEnabled(false); //disable fastest button
@@ -250,6 +252,14 @@ public class FragmentController extends Fragment implements SensorEventListener 
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+    public void stopShortestChr(){
+        shortestChr.stop(); //stop stopwatch
+        statusTv.setText("Robot Reached destination");
+//        Log.d("Btn access", "");
+    }
+    public void stopExploreChr(){
+        this.exploreChr.stop(); //start stopwatch
     }
 
 }
