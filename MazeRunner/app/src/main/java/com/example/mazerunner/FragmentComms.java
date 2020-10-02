@@ -60,21 +60,68 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
         sendString = view.findViewById(R.id.sendString);
         saveString = view.findViewById(R.id.saveString);
         outMessage = view.findViewById(R.id.stringToBeSent);
+        messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
+        communicationLog.setAdapter(messageListAdapter);
+//        sendString.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                byte[] bytes = outMessage.getText().toString().getBytes(Charset.defaultCharset());
+//                String message = outMessage.getText().toString();
+//                activitymain.sendToBtAct(message);
+//                // === append to messagelist
+////                if(BluetoothChat.writeMsg(message)){
+////
+//                    messageList.add("Sent : " + outMessage.getText().toString());
+//                    messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
+//                    communicationLog.setAdapter(messageListAdapter);
+//                    outMessage.setText("");
+////
+////                }
+//            }
+//        });
+
+//        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(bluetoothMessageReceiver, new IntentFilter("IncomingMsg"));
+//
+//        saveString.setOnClickListener(new View.OnClickListener() {
+//              @Override
+//              public void onClick(View v) {
+//                  Log.d(TAG, "onSaveClicked running");
+//                  TextView MessageTxtview = view.findViewById(R.id.stringToBeSent);
+//                  String userInput = MessageTxtview.getText().toString();
+//                  Context context = getActivity().getApplicationContext();
+//                  CharSequence toastText = "";
+//
+//                  RadioButton selectedRadioButton = (RadioButton) view.findViewById(checkedRadioButtonId);
+//                  String selectedRdbName = selectedRadioButton.getText().toString();
+//                  if (selectedRdbName.equals("F1")) {
+//                      sharedPref.edit().putString("F1", userInput).commit();
+//                      toastText = "F1 has been updated";
+//
+//                  } else if (selectedRdbName.equals("F2")) {
+//                      sharedPref.edit().putString("F2", userInput).commit();
+//                      toastText = "F2 has been updated";
+//                  }
+//                  int duration = Toast.LENGTH_SHORT;
+//                  Toast.makeText(context, toastText, duration).show();
+//              }
+//          });
+        return view;
+    }
+    //    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    @Override
+    @Nullable
+    @NonNull
+    public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
         sendString.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                byte[] bytes = outMessage.getText().toString().getBytes(Charset.defaultCharset());
                 String message = outMessage.getText().toString();
                 activitymain.sendToBtAct(message);
-                // === append to messagelist
-//                if(BluetoothChat.writeMsg(message)){
-//
-                    messageList.add("Sent : " + outMessage.getText().toString());
-                    messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
-                    communicationLog.setAdapter(messageListAdapter);
-                    outMessage.setText("");
-//
-//                }
+                messageList.add("Sent : " + outMessage.getText().toString());
+                messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
+                communicationLog.setAdapter(messageListAdapter);
+                outMessage.setText("");
             }
         });
 
@@ -103,12 +150,7 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
                   Toast.makeText(context, toastText, duration).show();
               }
           });
-//        //add action bar
-//        getSupportActionBar().setIcon(R.drawable.logo_colour);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setSubtitle("Messsaging");
-        return view;
-    }
+    };
 
     BroadcastReceiver bluetoothMessageReceiver = new BroadcastReceiver() {
         @Override
