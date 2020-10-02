@@ -14,6 +14,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -126,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                 waypointTextView = (TextView) findViewById(R.id.waypointText);
                 waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
                 String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
-                byte [] bytes = message.getBytes(Charset.defaultCharset());
-                sendCtrlToBtAct(bytes);
+//                byte [] bytes = message.getBytes(Charset.defaultCharset());
+                sendCtrlToBtAct(message);
             }
         }
 
@@ -142,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                 startpointTextView = (TextView) findViewById(R.id.startpointText);
                 startpointTextView.setText("x:" + (startPoint[0]) + " , y:" + (startPoint[1]));
                 String message = "start point x" + startPoint[0] + "y" + startPoint[1];
-                byte[] bytes = message.getBytes(Charset.defaultCharset());
-                sendCtrlToBtAct(bytes);
+//                byte[] bytes = message.getBytes(Charset.defaultCharset());
+                sendCtrlToBtAct(message);
             }
         }
     }
@@ -310,6 +311,9 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                         }
                     }
                 }
+                FragmentComms commsFrag = (FragmentComms)
+                        adapter.getItem(1);
+                commsFrag.updateCommsList(msg);
             } else if (msg.equals("EX_DONE")) { // exploration finished
                 //exploration completed
                 //for explore stopwatch
@@ -336,13 +340,16 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
 //                        }
 //                    }, 2000); //2 seconds later
 //                }
+                FragmentComms commsFrag = (FragmentComms)
+                        adapter.getItem(1);
+                commsFrag.updateCommsList(msg);
             } else {
                 //normal message sent from device
 //                FragmentComms commsFrag = (FragmentComms)
 //                        getSupportFragmentManager().getFragments().get(1);
-                FragmentComms commsFrag = (FragmentComms)
-                        adapter.getItem(1);
-                commsFrag.updateCommsList(msg);
+//                FragmentComms commsFrag = (FragmentComms)
+//                        adapter.getItem(1);
+//                commsFrag.updateCommsList(msg);
 //                try {
 //                    fragment_comms.updateCommsList(msg);
 //                } catch (Exception e) {
