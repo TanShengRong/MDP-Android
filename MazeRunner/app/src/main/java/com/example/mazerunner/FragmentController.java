@@ -154,6 +154,7 @@ public class FragmentController extends Fragment implements SensorEventListener 
 //                byte [] bytes = message.getBytes(Charset.defaultCharset());
 //                activitymain.sendCtrlToBtAct(bytes);
                 activitymain.sendCtrlToBtAct(message);
+//                activitymain.sendToBtAct(message);
                 explorationBtn.setEnabled(false); //disable exploration button
                 shortestBtn.setEnabled(true); //enable fastest button
                 activitymain.receiveShortestPath(shortestBtn.isEnabled());
@@ -175,6 +176,7 @@ public class FragmentController extends Fragment implements SensorEventListener 
 //                byte [] bytes = message.getBytes(Charset.defaultCharset());
 //                activitymain.sendCtrlToBtAct(bytes);
                 activitymain.sendCtrlToBtAct(message);
+//                activitymain.sendToBtAct(message);
                 shortest = true;
                 explorationBtn.setEnabled(true); //enable exploration button
                 shortestBtn.setEnabled(false); //disable fastest button

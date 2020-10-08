@@ -289,6 +289,9 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                FragmentComms commsFrag = (FragmentComms)
+                        adapter.getItem(1);
+                commsFrag.updateCommsList(msg);
             }
                 // Plot image recognised on obstacle
                 // e.g. NumberIDABXY where AB is 01 to 15; X is 01-15, Y is 01-20

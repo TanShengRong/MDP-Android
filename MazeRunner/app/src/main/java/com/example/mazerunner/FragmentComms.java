@@ -150,7 +150,8 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
 //                      toastText = "mdfString has updated grid";
                       MazeView mazeView = activitymain.getMazeView();
                       String mdf1mdf2 = sharedPref.getString("mdfString", "empty");
-                      if (mdf1mdf2.equals("empty") || mdf1mdf2.length() < 100) {
+                      if (mdf1mdf2.equals("empty")) {
+                          Log.d("mdf1mdf2PRESSED", mdf1mdf2);
                           return;
                       };
                       String[] _mdf1mdf2 = mdf1mdf2.split(":");
