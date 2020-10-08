@@ -145,6 +145,59 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
                   } else if (selectedRdbName.equals("F2")) {
                       sharedPref.edit().putString("F2", userInput).commit();
                       toastText = "F2 has been updated";
+                  } else if (selectedRdbName.equals("mdfString")) {
+//                      sharedPref.edit().putString("mdfString", userInput).commit();
+//                      toastText = "mdfString has updated grid";
+                      MazeView mazeView = activitymain.getMazeView();
+                      String mdf1mdf2 = sharedPref.getString("mdfString", "empty");
+                      if (mdf1mdf2.equals("empty")) {
+                          Log.d("mdf1mdf2PRESSED", mdf1mdf2);
+                          return;
+                      };
+                      String[] _mdf1mdf2 = mdf1mdf2.split(":");
+                      String mdfExploredString = _mdf1mdf2[0];
+//                      String mdfExploredString = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+                      String mdfObstacleString = _mdf1mdf2[1];
+//                      String mdfObstacleString = "000000000400000001c800000000000700000000800000001f8000070000000002000000000";
+                      // add in viewlist
+                      messageList.add("mdfExploredString : " + mdfExploredString);
+                      messageList.add("mdfObstacleString : " + mdfObstacleString);
+                      messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
+                      communicationLog.setAdapter(messageListAdapter);
+                      outMessage.setText("");
+                      //===
+                      String[] exploredString = activitymain.hexToBinary(mdfExploredString).split(""); //split to get string array
+                      Log.d("explored after convert", java.util.Arrays.toString(exploredString));
+                      Log.d("exploredstring LEN", "" + exploredString.length);
+                      int[] exploredGrid = new int[exploredString.length - 5]; //-4 to make it 300 -1 for "
+                      for (int i = 0; i < exploredGrid.length; i++) {
+                          exploredGrid[i] = Integer.parseInt(exploredString[i + 3]); // because first element is "
+                      }
+                      Log.d("explored grid", java.util.Arrays.toString(exploredGrid));
+
+                      String[] obstacleString = activitymain.hexToBinary(mdfObstacleString).split("");
+                      Log.d("obstacle after convert", java.util.Arrays.toString(obstacleString));
+
+                      int[] obstacleGrid = new int[obstacleString.length - 1]; //-1 for "
+                      for (int i = 0; i < obstacleGrid.length; i++) {
+                          obstacleGrid[i] = Integer.parseInt(obstacleString[i + 1]); // because first element is ""
+                      }
+                      Log.d("obstacleGrid", java.util.Arrays.toString(obstacleGrid));
+                      int inc = 0;
+                      int inc2 = 0;
+                      for (int y = 0; y < 20; y++) {
+                          for (int x = 0; x < 15; x++) {
+                              //For explored grids, draw obstacle if any
+                              if (exploredGrid != null && exploredGrid[inc] == 1) {
+                                  if (obstacleGrid != null && obstacleGrid[inc2] == 1) {
+                                      mazeView.setObsArray(x, y);
+                                  }
+                                  inc2++;
+                              }
+                              inc++;
+                          }
+                      }
+                      mazeView.updateMaze(exploredGrid, obstacleGrid);
                   }
                   int duration = Toast.LENGTH_SHORT;
                   Toast.makeText(context, toastText, duration).show();
@@ -181,6 +234,9 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
         else if (selectedRdbName.equals("F2")) {
             storedString = sharedPref.getString("F2", "empty");
         }
+        else if (selectedRdbName.equals("mdfString")) {
+            storedString = sharedPref.getString("mdfString", "empty");
+        }
         System.out.println(checkedRadioButtonId);
         TextView MessageTxtview = view.findViewById(R.id.stringToBeSent);
         MessageTxtview.setText(storedString);
@@ -191,5 +247,10 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
         messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
         communicationLog.setAdapter(messageListAdapter);
         outMessage.setText("");
+    }
+
+    public void updateMdfString(String mdf1mdf2) {
+        sharedPref.edit().putString("mdfString", mdf1mdf2).commit();
+        Toast.makeText(getActivity().getApplicationContext(), "mdfString has been updated", Toast.LENGTH_SHORT).show();
     }
 }

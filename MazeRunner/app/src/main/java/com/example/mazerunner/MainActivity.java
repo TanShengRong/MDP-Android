@@ -1,6 +1,8 @@
 package com.example.mazerunner;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
     private Chronometer exploreChr;
     protected String receivemsg;
     private static FragmentComms fragment_comms;
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
 //        enabletilt = getIntent().getBooleanExtra("TILT_KEY", false);
         shortestChr = (Chronometer) findViewById(R.id.shortestTimer);
 //        LocalBroadcastManager.getInstance(this).registerReceiver(bluetoothMessageReceiver, new IntentFilter("IncomingMsg"));
+//        sharedPref = getSharedPreferences("mdp0032", Context.MODE_PRIVATE);
     }
 
     public MazeView getMazeView() {
@@ -123,7 +127,6 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                 waypointTextView = (TextView) findViewById(R.id.waypointText);
                 waypointTextView.setText("x:-- , y:--");
             } else {
-
                 waypointTextView = (TextView) findViewById(R.id.waypointText);
                 waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
                 String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
@@ -149,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
         }
     }
     //method to convert hex to binary
-    private String hexToBinary(String hex) {
+    public String hexToBinary(String hex) {
         int pointer = 0;
         String binary = "";
         String partial;
@@ -220,6 +223,10 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                     // Update grid
                     mdfExploredString = jObject.getString("map");
                     mdfObstacleString = jObject.getString("obstacle");
+//                    sharedPref.edit().putString("mdfString", mdfExploredString+mdfObstacleString).commit();
+                    FragmentComms commsFrag = (FragmentComms)
+                            adapter.getItem(1);
+                    commsFrag.updateMdfString(mdfExploredString+":"+mdfObstacleString);
                     //Getting the explored grids from MDF string by making it into str array and changing to binary for accessing
                     String[] exploredString = hexToBinary(mdfExploredString).split(""); //split to get string array
                     Log.d("explored after convert", java.util.Arrays.toString(exploredString));
@@ -282,6 +289,9 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                FragmentComms commsFrag = (FragmentComms)
+                        adapter.getItem(1);
+                commsFrag.updateCommsList(msg);
             }
                 // Plot image recognised on obstacle
                 // e.g. NumberIDABXY where AB is 01 to 15; X is 01-15, Y is 01-20

@@ -389,6 +389,7 @@ public class FragmentBluetooth extends Fragment{
                     Toast.makeText(getContext(), "Connection Lost. Please try again.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                Log.d("sendToBtAct", theText);
                 //send out message
                 byte[] send = theText.getBytes();
                 btService.write(send);
@@ -400,24 +401,25 @@ public class FragmentBluetooth extends Fragment{
         }
     };
     //get robot movements from MainActivity
-//    private BroadcastReceiver mCtrlReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            // Get extra data included in the Intent
-//            String control = intent.getStringExtra("control");
-//            if (control != null){
-//                if (btService.getState() != btService.STATE_CONNECTED) {
-//                    Toast.makeText(getContext(), "Connection Lost. Please try again.", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                //send out message
-//                byte[] send = control.getBytes();
-//                btService.write(send);
-//                mOutStringBuffer.setLength(0);
-//
-//            }
-//        }
-//    };
+    private BroadcastReceiver mCtrlReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String control = intent.getStringExtra("control");
+            if (control != null){
+                if (btService.getState() != btService.STATE_CONNECTED) {
+                    Toast.makeText(getContext(), "Connection Lost. Please try again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Log.d("mCtrlReceiver", control);
+                //send out message
+                byte[] send = control.getBytes();
+                btService.write(send);
+                mOutStringBuffer.setLength(0);
+
+            }
+        }
+    };
     //listen for disconnection from MainActivity
     private BroadcastReceiver mDcReceiver = new BroadcastReceiver() {
         @Override
@@ -438,7 +440,7 @@ public class FragmentBluetooth extends Fragment{
     //register receivers needed
     private void registerReceivers(){
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mTextReceiver, new IntentFilter("getTextToSend"));
-//        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mCtrlReceiver, new IntentFilter("getCtrlToSend"));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mCtrlReceiver, new IntentFilter("getCtrlToSend"));
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mDcReceiver, new IntentFilter("initiateDc"));
 
         // Register for broadcasts when discovery has finished
@@ -448,7 +450,7 @@ public class FragmentBluetooth extends Fragment{
     //destroy all receivers
     private void destroyReceivers(){
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mTextReceiver);
-//        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCtrlReceiver);
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mCtrlReceiver);
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mDcReceiver);
         getActivity().unregisterReceiver(bReceiver);
     }

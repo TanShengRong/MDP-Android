@@ -60,6 +60,13 @@
                     android:layout_height="wrap_content"
                     android:text="F2"
                     android:layout_weight="1" />
+
+                <RadioButton
+                    android:id="@+id/mdfString"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="mdfString" />
             </RadioGroup>
     </LinearLayout>
 
