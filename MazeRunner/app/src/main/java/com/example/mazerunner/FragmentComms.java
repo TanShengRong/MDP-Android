@@ -18,6 +18,7 @@ import android.os.PersistableBundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -62,6 +63,7 @@ public class FragmentComms extends Fragment implements RadioGroup.OnCheckedChang
         outMessage = view.findViewById(R.id.stringToBeSent);
         messageListAdapter = new CommunicationListAdapter(getActivity().getApplicationContext(), R.layout.list_adapter_communication, messageList);
         communicationLog.setAdapter(messageListAdapter);
+        activitymain.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 //        sendString.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
