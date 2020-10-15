@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
     protected String receivemsg;
     private static FragmentComms fragment_comms;
     SharedPreferences sharedPref;
+//    private FireMissilesDialogFragment fireMissilesDialogFragment;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,10 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
         viewPager = (ViewPager) findViewById(R.id.viewpager_id);
         robotPosition = (TextView) findViewById(R.id.robotPosition);
 
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        fragmentManager = getSupportFragmentManager();
+
+//        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(fragmentManager);
         //Adding Fragments
         FragmentMap fragment_map = new FragmentMap();
         Bundle bundle = new Bundle();
@@ -129,9 +135,13 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
             } else {
                 waypointTextView = (TextView) findViewById(R.id.waypointText);
                 waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
-                String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
+//                String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
+                String message = "WP:" + waypoint[0] + ":" + waypoint[1];
+                Log.d("waypoint", message);
 //                byte [] bytes = message.getBytes(Charset.defaultCharset());
                 sendCtrlToBtAct(message);
+                FireMissilesDialogFragment fireMissilesDialogFragment = new FireMissilesDialogFragment();
+                fireMissilesDialogFragment.show(fragmentManager, "Dialog");
             }
         }
 
