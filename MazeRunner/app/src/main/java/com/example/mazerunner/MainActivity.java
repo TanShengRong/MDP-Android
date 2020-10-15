@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -399,11 +400,13 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
         // User touched the dialog's positive button
         String message = "WP:" + waypoint[0] + ":" + waypoint[1];
         Log.d("waypoint_fire", message);
+        Toast.makeText(getApplicationContext(), message + " updated", Toast.LENGTH_SHORT).show();
         sendCtrlToBtAct(message);
     }
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         // User touched the dialog's negative button
+        Toast.makeText(getApplicationContext(), "WP not updated", Toast.LENGTH_SHORT).show();
     }
 
 }
