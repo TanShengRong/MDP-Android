@@ -38,8 +38,8 @@ public class NoticeDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Fire missiles")
-                .setPositiveButton("Fire", new DialogInterface.OnClickListener() {
+        builder.setMessage("Update Waypoint?")
+                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Send the positive button event back to the host activity
                         listener.onDialogPositiveClick(NoticeDialogFragment.this);
