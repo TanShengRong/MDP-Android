@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -21,7 +22,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity implements FragmentBluetooth.OnMessageChangedListener{
+public class MainActivity extends AppCompatActivity implements FragmentBluetooth.OnMessageChangedListener, NoticeDialogFragment.NoticeDialogListener{
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
     protected String receivemsg;
     private static FragmentComms fragment_comms;
     SharedPreferences sharedPref;
-//    private FireMissilesDialogFragment fireMissilesDialogFragment;
     private FragmentManager fragmentManager;
 
     @Override
@@ -136,12 +136,8 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                 waypointTextView = (TextView) findViewById(R.id.waypointText);
                 waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
 //                String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
-                String message = "WP:" + waypoint[0] + ":" + waypoint[1];
-                Log.d("waypoint", message);
-//                byte [] bytes = message.getBytes(Charset.defaultCharset());
-                sendCtrlToBtAct(message);
-                FireMissilesDialogFragment fireMissilesDialogFragment = new FireMissilesDialogFragment();
-                fireMissilesDialogFragment.show(fragmentManager, "Dialog");
+                DialogFragment newFragment = new NoticeDialogFragment();
+                newFragment.show(getSupportFragmentManager(), "missiles");
             }
         }
 
@@ -388,6 +384,26 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
     public void stopExploreWatch(){
         exploreChr = (Chronometer) findViewById(R.id.exploreTimer);
         exploreChr.stop();
-
     }
+
+    public void showNoticeDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new NoticeDialogFragment();
+        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
+    }
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        // User touched the dialog's positive button
+        String message = "WP:" + waypoint[0] + ":" + waypoint[1];
+        Log.d("waypoint_fire", message);
+        sendCtrlToBtAct(message);
+    }
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+    }
+
 }
