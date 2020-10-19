@@ -13,7 +13,7 @@ public class NoticeDialogFragment extends DialogFragment {
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
+        public void onDialogPositiveClick(DialogFragment dialog, String s);
         public void onDialogNegativeClick(DialogFragment dialog);
     }
 
@@ -38,11 +38,11 @@ public class NoticeDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Update Waypoint?")
+        builder.setMessage("Update " + getArguments().getString("wp") +"?")
                 .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Send the positive button event back to the host activity
-                        listener.onDialogPositiveClick(NoticeDialogFragment.this);
+                        listener.onDialogPositiveClick(NoticeDialogFragment.this, getArguments().getString("wp"));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

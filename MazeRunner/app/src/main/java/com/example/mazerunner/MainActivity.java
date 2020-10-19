@@ -136,9 +136,7 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
             } else {
                 waypointTextView = (TextView) findViewById(R.id.waypointText);
                 waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
-//                String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
-                DialogFragment newFragment = new NoticeDialogFragment();
-                newFragment.show(getSupportFragmentManager(), "missiles");
+                showNoticeDialog("WP:" + waypoint[0] + ":" + waypoint[1] + ":");
             }
         }
 
@@ -300,9 +298,9 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                         adapter.getItem(1);
                 commsFrag.updateCommsList(msg);
             }
-                // Plot image recognised on obstacle
-                // e.g. NumberIDABXY where AB is 01 to 15; X is 01-15, Y is 01-20
-                // AB is number id; X is x-axis; Y is y-axis
+            // Plot image recognised on obstacle
+            // e.g. NumberIDABXY where AB is 01 to 15; X is 01-15, Y is 01-20
+            // AB is number id; X is x-axis; Y is y-axis
             else if (msg.contains("NumberID")) {
                 Log.d("NumberID", msg);
                 boolean isNumberIDStr = Pattern.matches("^[a-zA-z]{8}[0-9]{6}$", msg);
@@ -387,26 +385,27 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
         exploreChr.stop();
     }
 
-    public void showNoticeDialog() {
+    public void showNoticeDialog(String s) {
         // Create an instance of the dialog fragment and show it
+        Bundle args = new Bundle();
+        args.putString("wp", s);
         DialogFragment dialog = new NoticeDialogFragment();
+        dialog.setArguments(args);
         dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
     }
     // The dialog fragment receives a reference to this Activity through the
     // Fragment.onAttach() callback, which it uses to call the following methods
     // defined by the NoticeDialogFragment.NoticeDialogListener interface
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onDialogPositiveClick(DialogFragment dialog, String s) {
         // User touched the dialog's positive button
-        String message = "WP:" + waypoint[0] + ":" + waypoint[1];
-        Log.d("waypoint_fire", message);
-        Toast.makeText(getApplicationContext(), message + " updated", Toast.LENGTH_SHORT).show();
-        sendCtrlToBtAct(message);
+        Toast.makeText(getApplicationContext(), s + " updated", Toast.LENGTH_SHORT).show();
+        sendCtrlToBtAct(s);
     }
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         // User touched the dialog's negative button
-        Toast.makeText(getApplicationContext(), "WP not updated", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "WP not updated", Toast.LENGTH_SHORT).show();
     }
 
 }
