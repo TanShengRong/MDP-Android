@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
     public TextView startpointTextView;
     private String mdfExploredString = "";
     private String mdfObstacleString = "";
+    protected String image = "";
     private ViewPagerAdapter adapter;
     private Chronometer shortestChr;
     private TextView statusTv;
@@ -325,10 +326,11 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                             }
                         }
                     }
+                    image = "(" +  numberId + "," + xCoord +"," +yCoord + ")";
                 }
                 FragmentComms commsFrag = (FragmentComms)
                         adapter.getItem(1);
-                commsFrag.updateCommsList(msg);
+                commsFrag.updateCommsList(image);
             } else if (msg.equals("EX_DONE")) { // exploration finished
                 //exploration completed
                 //for explore stopwatch
