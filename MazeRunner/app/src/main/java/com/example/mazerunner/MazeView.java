@@ -223,14 +223,14 @@ public class MazeView extends View{
                 break;
             case 180:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 270);
-                message = "R";//right = 2
+                message = "D";//right = 2
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
                 break;
             case 90:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
-                message = "R";
+                message = "D";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
@@ -263,21 +263,21 @@ public class MazeView extends View{
                 break;
             case 180:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
-                message = "L";
+                message = "A";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
                 break;
             case 270:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
-                message = "R";
+                message = "D";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
                 break;
             default:
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
-                message = "R";
+                message = "D";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
@@ -301,21 +301,21 @@ public class MazeView extends View{
                 break;
             case 90: //if facing right wall, turn left
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
-                message = "L";
+                message = "A";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
                 break;
             case 180: //if facing left wall, turn right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 270);
-                message = "R";
+                message = "D";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
                 break;
             default: //if facing downwards, turn right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 0);
-                message = "R";
+                message = "D";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
@@ -339,21 +339,21 @@ public class MazeView extends View{
                 break;
             case 270: //if facing left wall, turns left
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
-                message = "L";
+                message = "A";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
                 break;
             case 90: // if facing right wall, turns right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 180);
-                message = "R";
+                message = "D";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);
                 break;
             default: //if facing up, turns right
                 updateRobotCoords(robotCenter[0], robotCenter[1], 90);
-                message = "R";
+                message = "D";
 //                bytes = message.getBytes(Charset.defaultCharset());
 //                activityMain.sendCtrlToBtAct(bytes);
                 activityMain.sendCtrlToBtAct(message);

@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +23,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity implements FragmentBluetooth.OnMessageChangedListener{
+public class MainActivity extends AppCompatActivity implements FragmentBluetooth.OnMessageChangedListener, NoticeDialogFragment.NoticeDialogListener{
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
     public TextView startpointTextView;
     private String mdfExploredString = "";
     private String mdfObstacleString = "";
+    protected String image = "";
     private ViewPagerAdapter adapter;
     private Chronometer shortestChr;
     private TextView statusTv;
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
     protected String receivemsg;
     private static FragmentComms fragment_comms;
     SharedPreferences sharedPref;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,10 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
         viewPager = (ViewPager) findViewById(R.id.viewpager_id);
         robotPosition = (TextView) findViewById(R.id.robotPosition);
 
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        fragmentManager = getSupportFragmentManager();
+
+//        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(fragmentManager);
         //Adding Fragments
         FragmentMap fragment_map = new FragmentMap();
         Bundle bundle = new Bundle();
@@ -129,9 +137,7 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
             } else {
                 waypointTextView = (TextView) findViewById(R.id.waypointText);
                 waypointTextView.setText("x:" + (waypoint[0]) + " , y:" + (waypoint[1]));
-                String message = "waypoint x" + waypoint[0] + "y" + waypoint[1];
-//                byte [] bytes = message.getBytes(Charset.defaultCharset());
-                sendCtrlToBtAct(message);
+                showNoticeDialog("WP:" + waypoint[0] + ":" + waypoint[1] + ":");
             }
         }
 
@@ -293,9 +299,9 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                         adapter.getItem(1);
                 commsFrag.updateCommsList(msg);
             }
-                // Plot image recognised on obstacle
-                // e.g. NumberIDABXY where AB is 01 to 15; X is 01-15, Y is 01-20
-                // AB is number id; X is x-axis; Y is y-axis
+            // Plot image recognised on obstacle
+            // e.g. NumberIDABXY where AB is 01 to 15; X is 01-15, Y is 01-20
+            // AB is number id; X is x-axis; Y is y-axis
             else if (msg.contains("NumberID")) {
                 Log.d("NumberID", msg);
                 boolean isNumberIDStr = Pattern.matches("^[a-zA-z]{8}[0-9]{6}$", msg);
@@ -311,19 +317,21 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                         Log.d("NumberID", "isValidNumbers");
                         ArrayList<String> tempObsArray = mazeView.getObsArray();
                         String tempPos = (xCoord-1) + "," + (yCoord-1);
-                        boolean isOnObstacle;
-                        for (int i=0; i<tempObsArray.size(); i++){
-                            isOnObstacle = tempObsArray.get(i).equals(tempPos);
-                            if (isOnObstacle) {
-                                mazeView.updateNumberID(xCoord, yCoord, ""+numberId);
-                                break;
-                            }
-                        }
+//                        boolean isOnObstacle;
+//                        for (int i=0; i<tempObsArray.size(); i++){
+//                            isOnObstacle = tempObsArray.get(i).equals(tempPos);
+//                            if (isOnObstacle) {
+//                                mazeView.updateNumberID(xCoord, yCoord, ""+numberId);
+//                                break;
+//                            }
+//                        }
+                        mazeView.updateNumberID(xCoord, yCoord, ""+numberId);
                     }
+                    image = "(" +  numberId + "," + xCoord +"," +yCoord + ")";
                 }
                 FragmentComms commsFrag = (FragmentComms)
                         adapter.getItem(1);
-                commsFrag.updateCommsList(msg);
+                commsFrag.updateCommsList(image);
             } else if (msg.equals("EX_DONE")) { // exploration finished
                 //exploration completed
                 //for explore stopwatch
@@ -353,6 +361,12 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                 FragmentComms commsFrag = (FragmentComms)
                         adapter.getItem(1);
                 commsFrag.updateCommsList(msg);
+            }
+            // ImageID {(1,2,3),(4,5,6)}
+            else if (msg.contains("ImageID")) {
+                FragmentComms commsFrag = (FragmentComms)
+                        adapter.getItem(1);
+                commsFrag.updateCommsList(msg);
             } else {
                 //normal message sent from device
 //                FragmentComms commsFrag = (FragmentComms)
@@ -378,6 +392,29 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
     public void stopExploreWatch(){
         exploreChr = (Chronometer) findViewById(R.id.exploreTimer);
         exploreChr.stop();
-
     }
+
+    public void showNoticeDialog(String s) {
+        // Create an instance of the dialog fragment and show it
+        Bundle args = new Bundle();
+        args.putString("wp", s);
+        DialogFragment dialog = new NoticeDialogFragment();
+        dialog.setArguments(args);
+        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
+    }
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, String s) {
+        // User touched the dialog's positive button
+        Toast.makeText(getApplicationContext(), s + " updated", Toast.LENGTH_SHORT).show();
+        sendCtrlToBtAct(s);
+    }
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // User touched the dialog's negative button
+//        Toast.makeText(getApplicationContext(), "WP not updated", Toast.LENGTH_SHORT).show();
+    }
+
 }

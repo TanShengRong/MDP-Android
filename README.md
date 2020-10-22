@@ -4,11 +4,10 @@
 
 ### Leaderboard 
 
-- (?) Display mdf string
 - (?) Show captured & identified images
 
 ### Known Bugs
 
-- Grid crashes the app sometimes!! (moderate issue)
+- Grid crashes the app rarely!! (moderate issue)
 - Other buttons are clickable during exploration / fastest (minor issue)
-- COMMS keyboard blocks textbox during input (minor issue)
+- multi messages being sent - broadcast receiver repeated created (minor issue)
