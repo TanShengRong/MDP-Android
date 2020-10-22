@@ -317,14 +317,15 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
                         Log.d("NumberID", "isValidNumbers");
                         ArrayList<String> tempObsArray = mazeView.getObsArray();
                         String tempPos = (xCoord-1) + "," + (yCoord-1);
-                        boolean isOnObstacle;
-                        for (int i=0; i<tempObsArray.size(); i++){
-                            isOnObstacle = tempObsArray.get(i).equals(tempPos);
-                            if (isOnObstacle) {
-                                mazeView.updateNumberID(xCoord, yCoord, ""+numberId);
-                                break;
-                            }
-                        }
+//                        boolean isOnObstacle;
+//                        for (int i=0; i<tempObsArray.size(); i++){
+//                            isOnObstacle = tempObsArray.get(i).equals(tempPos);
+//                            if (isOnObstacle) {
+//                                mazeView.updateNumberID(xCoord, yCoord, ""+numberId);
+//                                break;
+//                            }
+//                        }
+                        mazeView.updateNumberID(xCoord, yCoord, ""+numberId);
                     }
                     image = "(" +  numberId + "," + xCoord +"," +yCoord + ")";
                 }
@@ -357,6 +358,12 @@ public class MainActivity extends AppCompatActivity implements FragmentBluetooth
 //                        }
 //                    }, 2000); //2 seconds later
 //                }
+                FragmentComms commsFrag = (FragmentComms)
+                        adapter.getItem(1);
+                commsFrag.updateCommsList(msg);
+            }
+            // ImageID {(1,2,3),(4,5,6)}
+            else if (msg.contains("ImageID")) {
                 FragmentComms commsFrag = (FragmentComms)
                         adapter.getItem(1);
                 commsFrag.updateCommsList(msg);
